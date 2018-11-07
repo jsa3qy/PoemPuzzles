@@ -4,6 +4,7 @@ from hyphen import *
 from hyphen.dictools import *
 
 
+
 def readInRawPoem(myFile):
     listOfWords = []
     for line in myFile:
