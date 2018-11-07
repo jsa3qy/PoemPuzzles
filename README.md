@@ -7,3 +7,6 @@ if you want to add something to master, let's make a branch called trunk (git br
 off of trunk make a branch called doit (where you will do the think you want to do)
 build on doit and PR against trunk. Then once you merge with trunk make sure that it works and then PR against master
 
+sudo python3 -m pip install -r requirements.txt
+
+run that ^^ when you pull
