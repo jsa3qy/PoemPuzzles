@@ -1,4 +1,4 @@
-from tilingHelpers import *
+
 
 POEM_SIZE = 60
 
@@ -13,7 +13,7 @@ class sylNode:
         self.absolutePos = absolutePos
 
     def toString(self):
-        print("word size: " + str(self.wordSize) + "\nsylRight: " + str(self.sylRight) + "\nsylLeft: " + str(self.sylLeft) + "\ntag: " + str(self.tag) + "\nsyl: " + str(self.syl) + "\nabsolutePos: " + str(self.absolutePos))
+        print("word size: " + str(self.wordSize) + "\nsylRight: " + str(self.sylRight) + "\nsylLeft: " + str(self.sylLeft) + "\ntag: " + str(self.tag) + "\nsyl: " + str(self.syl) + "\nabsolutePos: " + str(self.absolutePos) + "\n" )
 
 class ominoe:
     #constructor
@@ -35,7 +35,18 @@ class ominoe:
                 if indexInTile == False:
                     self.reachableIndices.append(index)
 
-
-
     def removeReachables(self, index):
         self.reachableIndices.remove(index)
+
+    def listOfReachableIndices(index, listOfSylsSize):
+        #index is index in whole poem, that is, the #syllable
+        reachable = []
+        if index>0:
+            reachable.append(index-1)
+        if index<listOfSylsSize-1:
+            reachable.append(index+1)
+        if index + 10 < listOfSylsSize:
+            reachable.append(index+10)
+        if index >= 10:
+            reachable.append(index-10)
+        return reachable

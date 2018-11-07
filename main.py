@@ -1,7 +1,6 @@
 from dataCleaningHelpers import *
-from tilingHelpers.py import *
+from tilingHelpers import *
 from objectDefinitions import *
-
 
 def main():
     myFile = open("poem.txt")
@@ -11,8 +10,8 @@ def main():
     listOfWords = readInRawPoem(myFile)
     listOfSyls = readInSyllablePoem(otherFile)
     masterListOfSyllables = makeMasterListOfSyllables(listOfSyls)
-    listOfSylNodes = makeSylNodes(listOfSyls, masterListOfSyllables)
-    for node in listOfSylNodes:
+    listOfSylNodes = makeSylNodes(listOfSyls)
+    for i, node in enumerate(listOfSylNodes):
         node.toString()
 
 
