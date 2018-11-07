@@ -3,7 +3,6 @@ from string import punctuation
 from hyphen import *
 from hyphen.dictools import *
 
-
 def readInRawPoem(myFile):
     listOfWords = []
     for line in myFile:
@@ -24,5 +23,14 @@ def returnListOfSyllables(listOfWords):
             listOfSyls.append(h_en.syllables(word))
         else:
             listOfSyls.append([word])
+    for i in listOfSyls:
+        print(i)
 
+    return listOfSyls
+
+def readInSyllablePoem(myFile):
+    listOfSyls = []
+    for line in myFile:
+        line = line.split()
+        listOfSyls.append(line)
     return listOfSyls

@@ -1,15 +1,27 @@
-from helpers import *
+from dataCleaningHelpers import *
+from tilingHelpers import *
 from objectDefinitions import *
-
 
 def main():
     myFile = open("poem.txt")
+    otherFile = open("syllablizedPoem.txt")
 
     #No punctuation in words!
     listOfWords = readInRawPoem(myFile)
+    listOfSyls = readInSyllablePoem(otherFile)
+    masterListOfSyllables = makeMasterListOfSyllables(listOfSyls)
+    listOfSylNodes = makeSylNodes(listOfSyls)
+    for i, node in enumerate(listOfSylNodes):
+        #AHHH CAN BE OPTIMIZED WITH TRIES OVER HASHMAP
+        myOminoe = ominoe(5)
+        myOminoe.reachableIndices+= listOfReachableIndices(i, 60)
+        expandInAllDirections(myOminoe, listOfSylNodes)
 
-    listOfSyls = returnListOfSyllables(listOfWords)
-    print(listOfSyls)
+    for validTile in listOfTiles:
+        validTile.toString()
+
+
+
 
 if __name__ == "__main__":
     main()
