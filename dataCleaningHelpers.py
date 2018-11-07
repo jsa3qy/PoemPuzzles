@@ -1,7 +1,6 @@
 from objectDefinitions import *
 from string import punctuation
 from hyphen import *
-from hyphen.dictools import *
 
 def readInRawPoem(myFile):
     listOfWords = []
