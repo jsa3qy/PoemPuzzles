@@ -38,15 +38,30 @@ class ominoe:
     def removeReachables(self, index):
         self.reachableIndices.remove(index)
 
-    def listOfReachableIndices(index, listOfSylsSize):
-        #index is index in whole poem, that is, the #syllable
-        reachable = []
-        if index>0:
-            reachable.append(index-1)
-        if index<listOfSylsSize-1:
-            reachable.append(index+1)
-        if index + 10 < listOfSylsSize:
-            reachable.append(index+10)
-        if index >= 10:
-            reachable.append(index-10)
-        return reachable
+    def stringToHash(self):
+        tempList = []
+        for node in self.sylList:
+            tempList.append(node.tag)
+        tempList.sort()
+        tempStr = "".join(tempList)
+        return tempStr
+
+    def toString(self):
+        tempList = []
+        for syl in self.sylList:
+            tempList.append(syl.absolutePos)
+        tempList.sort()
+        print(tempList)
+
+def listOfReachableIndices(index, listOfSylsSize):
+    #index is index in whole poem, that is, the #syllable
+    reachable = []
+    if index>0 and (index%10 != 0):
+        reachable.append(index-1)
+    if index<(listOfSylsSize-1) and (index%10 != 9):
+        reachable.append(index+1)
+    if index + 10 < listOfSylsSize:
+        reachable.append(index+10)
+    if index >= 10:
+        reachable.append(index-10)
+    return reachable
