@@ -1,4 +1,5 @@
 from dataCleaningHelpers import *
+from tilingHelpers.py import *
 from objectDefinitions import *
 
 
@@ -9,12 +10,12 @@ def main():
     #No punctuation in words!
     listOfWords = readInRawPoem(myFile)
     listOfSyls = readInSyllablePoem(otherFile)
-    listOfSylNodes = []
-    for numWord, word in enumerate(listOfSyls):
-        for i, syl in enumerate(word):
-            listOfSylNodes.append(sylNode(word, i, str(numWord)+"-"+str(i)))
+    masterListOfSyllables = makeMasterListOfSyllables(listOfSyls)
+    listOfSylNodes = makeSylNodes(listOfSyls, masterListOfSyllables)
     for node in listOfSylNodes:
-        print(node.toString())
+        node.toString()
+
+
 
 
 if __name__ == "__main__":
