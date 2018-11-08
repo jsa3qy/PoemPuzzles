@@ -1,6 +1,7 @@
 from dataCleaningHelpers import *
 from tilingHelpers import *
 from objectDefinitions import *
+from test import *
 
 def main():
     myFile = open("poem.txt")
@@ -24,8 +25,14 @@ def main():
         sortedListOfTiles.append(validTile.getTile())
 
     sortedListOfTiles.sort(key=lambda x: x[0])
+    true = 0
     for validTile in sortedListOfTiles:
-        print(validTile)
+        valid = testForValidity2(validTile)
+        if valid:
+            true+=1
+        print(str(validTile) + str(valid))
+    print("total tiles enumerated: " + str(len(sortedListOfTiles)))
+    print("valid tiles: " + str(true))
 
 
 
