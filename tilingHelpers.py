@@ -21,7 +21,7 @@ def makeMasterListOfSyllables(listOfSyls):
 def extendOminoe(curOminoe, index, listOfSylNodes):
     maybeNode = listOfSylNodes[index]
     if curOminoe.sylAvailable >= maybeNode.wordSize:
-        curOminoe.sylList.append(maybeNode)
+        curOminoe.sylList.append(listOfSylNodes[index])
         curOminoe.extendReachables(index)
         curOminoe.removeReachables(index)
         for node in range(1,maybeNode.sylLeft+1):
@@ -33,22 +33,27 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
             curOminoe.extendReachables(index+node)
             curOminoe.removeReachables(index+node)
         curOminoe.sylAvailable -= maybeNode.wordSize
+    else:
+        curOminoe.valid = False
     return curOminoe
 
 def expandInAllDirections(ominoe, listOfSylNodes):
     global listOfTiles
     global alreadyCounted
-    for index in ominoe.reachableIndices:
-        tempOminoe = ominoe
+    tempList = ominoe.reachableIndices
+    tempOminoe = ominoe
+    for index in tempList:
+        if index not in ominoe.reachableIndices:
+            continue
         tempOminoe = extendOminoe(tempOminoe, index, listOfSylNodes)
         if tempOminoe.sylAvailable == 0:
             if alreadyCounted.get(tempOminoe.stringToHash()) != None:
-                break
+                continue
             else:
                 alreadyCounted[tempOminoe.stringToHash()] = 1
                 listOfTiles.append(tempOminoe)
 
-        else:
-            if index in tempOminoe.reachableIndices:
-                continue
-            tempOminoe = expandInAllDirections(tempOminoe, listOfSylNodes)
+        elif tempOminoe.valid == False:
+            tempOminoe.valid = True
+            tempOminoe.removeReachables(index)
+        expandInAllDirections(tempOminoe, listOfSylNodes)

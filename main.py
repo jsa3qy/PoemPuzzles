@@ -11,12 +11,12 @@ def main():
     listOfSyls = readInSyllablePoem(otherFile)
     masterListOfSyllables = makeMasterListOfSyllables(listOfSyls)
     listOfSylNodes = makeSylNodes(listOfSyls)
+
     for i, node in enumerate(listOfSylNodes):
         #AHHH CAN BE OPTIMIZED WITH TRIES OVER HASHMAP
         myOminoe = ominoe(5)
         myOminoe.reachableIndices+= listOfReachableIndices(i, 60)
         expandInAllDirections(myOminoe, listOfSylNodes)
-
     for validTile in listOfTiles:
         validTile.toString()
 

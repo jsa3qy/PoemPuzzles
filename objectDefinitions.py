@@ -22,6 +22,7 @@ class ominoe:
         self.size = size
         self.sylList = []
         self.reachableIndices = []
+        self.valid = True
 
     def extendReachables(self, index):
         listOfSylsSize = POEM_SIZE
@@ -58,7 +59,7 @@ def listOfReachableIndices(index, listOfSylsSize):
     reachable = []
     if index>0 and (index%10 != 0):
         reachable.append(index-1)
-    if index<(listOfSylsSize-1) and (index%10 != 9):
+    if (index%10 != 9):
         reachable.append(index+1)
     if index + 10 < listOfSylsSize:
         reachable.append(index+10)
