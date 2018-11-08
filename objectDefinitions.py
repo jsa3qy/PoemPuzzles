@@ -53,6 +53,15 @@ class ominoe:
             tempList.append(syl.absolutePos)
         tempList.sort()
         print(tempList)
+        return tempList
+
+    def getTile(self):
+        tempList = []
+        for syl in self.sylList:
+            tempList.append(syl.absolutePos)
+        tempList.sort()
+
+        return tempList
 
 def listOfReachableIndices(index, listOfSylsSize):
     #index is index in whole poem, that is, the #syllable

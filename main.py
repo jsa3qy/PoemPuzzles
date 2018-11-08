@@ -17,8 +17,15 @@ def main():
         myOminoe = ominoe(5)
         myOminoe.reachableIndices+= listOfReachableIndices(i, 60)
         expandInAllDirections(myOminoe, listOfSylNodes)
+
+    #let's take valid tiles from the ominoe objects and sort them
+    sortedListOfTiles = []
     for validTile in listOfTiles:
-        validTile.toString()
+        sortedListOfTiles.append(validTile.getTile())
+
+    sortedListOfTiles.sort(key=lambda x: x[0])
+    for validTile in sortedListOfTiles:
+        print(validTile)
 
 
 

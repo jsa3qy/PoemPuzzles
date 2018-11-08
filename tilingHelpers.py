@@ -1,4 +1,5 @@
 from objectDefinitions import *
+import copy
 
 listOfTiles = []
 alreadyCounted = {}
@@ -34,17 +35,21 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
             curOminoe.removeReachables(index+node)
         curOminoe.sylAvailable -= maybeNode.wordSize
     else:
-        curOminoe.valid = False
+        curOminoe.removeReachables(index)
+        for node in range(1,maybeNode.sylLeft+1):
+            if (node-index) in curOminoe.reachableIndices:
+                curOminoe.removeReachables(index-node)
+        for node in range(1,maybeNode.sylRight+1):
+            if (node+index) in curOminoe.reachableIndices:
+                curOminoe.removeReachables(index+node)
     return curOminoe
 
 def expandInAllDirections(ominoe, listOfSylNodes):
     global listOfTiles
     global alreadyCounted
-    tempList = ominoe.reachableIndices
-    tempOminoe = ominoe
-    for index in tempList:
-        if index not in ominoe.reachableIndices:
-            continue
+    tempReachableIndices = copy.deepcopy(ominoe.reachableIndices)
+    tempOminoe = copy.deepcopy(ominoe)
+    for index in tempOminoe.reachableIndices:
         tempOminoe = extendOminoe(tempOminoe, index, listOfSylNodes)
         if tempOminoe.sylAvailable == 0:
             if alreadyCounted.get(tempOminoe.stringToHash()) != None:
@@ -52,8 +57,7 @@ def expandInAllDirections(ominoe, listOfSylNodes):
             else:
                 alreadyCounted[tempOminoe.stringToHash()] = 1
                 listOfTiles.append(tempOminoe)
-
-        elif tempOminoe.valid == False:
-            tempOminoe.valid = True
-            tempOminoe.removeReachables(index)
         expandInAllDirections(tempOminoe, listOfSylNodes)
+        if index in ominoe.reachableIndices:
+            ominoe.removeReachables(index)
+        expandInAllDirections(ominoe, listOfSylNodes)
