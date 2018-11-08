@@ -1,4 +1,5 @@
 from objectDefinitions import *
+import copy
 
 listOfTiles = []
 alreadyCounted = {}
@@ -21,7 +22,7 @@ def makeMasterListOfSyllables(listOfSyls):
 def extendOminoe(curOminoe, index, listOfSylNodes):
     maybeNode = listOfSylNodes[index]
     if curOminoe.sylAvailable >= maybeNode.wordSize:
-        curOminoe.sylList.append(maybeNode)
+        curOminoe.sylList.append(listOfSylNodes[index])
         curOminoe.extendReachables(index)
         curOminoe.removeReachables(index)
         for node in range(1,maybeNode.sylLeft+1):
@@ -33,22 +34,30 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
             curOminoe.extendReachables(index+node)
             curOminoe.removeReachables(index+node)
         curOminoe.sylAvailable -= maybeNode.wordSize
+    else:
+        curOminoe.removeReachables(index)
+        for node in range(1,maybeNode.sylLeft+1):
+            if (node-index) in curOminoe.reachableIndices:
+                curOminoe.removeReachables(index-node)
+        for node in range(1,maybeNode.sylRight+1):
+            if (node+index) in curOminoe.reachableIndices:
+                curOminoe.removeReachables(index+node)
     return curOminoe
 
 def expandInAllDirections(ominoe, listOfSylNodes):
     global listOfTiles
     global alreadyCounted
-    for index in ominoe.reachableIndices:
-        tempOminoe = ominoe
+    tempReachableIndices = copy.deepcopy(ominoe.reachableIndices)
+    tempOminoe = copy.deepcopy(ominoe)
+    for index in tempOminoe.reachableIndices:
         tempOminoe = extendOminoe(tempOminoe, index, listOfSylNodes)
         if tempOminoe.sylAvailable == 0:
             if alreadyCounted.get(tempOminoe.stringToHash()) != None:
-                break
+                continue
             else:
                 alreadyCounted[tempOminoe.stringToHash()] = 1
                 listOfTiles.append(tempOminoe)
-
-        else:
-            if index in tempOminoe.reachableIndices:
-                continue
-            tempOminoe = expandInAllDirections(tempOminoe, listOfSylNodes)
+        expandInAllDirections(tempOminoe, listOfSylNodes)
+        if index in ominoe.reachableIndices:
+            ominoe.removeReachables(index)
+        expandInAllDirections(ominoe, listOfSylNodes)

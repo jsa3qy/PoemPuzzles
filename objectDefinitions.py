@@ -22,6 +22,7 @@ class ominoe:
         self.size = size
         self.sylList = []
         self.reachableIndices = []
+        self.valid = True
 
     def extendReachables(self, index):
         listOfSylsSize = POEM_SIZE
@@ -52,13 +53,22 @@ class ominoe:
             tempList.append(syl.absolutePos)
         tempList.sort()
         print(tempList)
+        return tempList
+
+    def getTile(self):
+        tempList = []
+        for syl in self.sylList:
+            tempList.append(syl.absolutePos)
+        tempList.sort()
+
+        return tempList
 
 def listOfReachableIndices(index, listOfSylsSize):
     #index is index in whole poem, that is, the #syllable
     reachable = []
     if index>0 and (index%10 != 0):
         reachable.append(index-1)
-    if index<(listOfSylsSize-1) and (index%10 != 9):
+    if (index%10 != 9):
         reachable.append(index+1)
     if index + 10 < listOfSylsSize:
         reachable.append(index+10)
