@@ -30,8 +30,3 @@ def testForValidity2(ListOfValsInOminoe):
         return True
     else:
         return False
-
-
-
-#listM = [39, 47, 48, 49, 58]
-#print(testForValidity2(listM))
