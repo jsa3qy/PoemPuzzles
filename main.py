@@ -17,6 +17,7 @@ def main():
         #AHHH CAN BE OPTIMIZED WITH TRIES OVER HASHMAP
         myOminoe = ominoe(5)
         myOminoe.reachableIndices+= listOfReachableIndices(i, 60)
+        extendOminoe(myOminoe, i, listOfSylNodes)
         expandInAllDirections(myOminoe, listOfSylNodes)
 
     #let's take valid tiles from the ominoe objects and sort them
@@ -27,10 +28,13 @@ def main():
     sortedListOfTiles.sort(key=lambda x: x[0])
     true = 0
     for validTile in sortedListOfTiles:
-        valid = testForValidity2(validTile)
+        valid = testForValidity(validTile)
         if valid:
             true+=1
-        print(str(validTile) + str(valid))
+        if valid:
+            print("valid: ",validTile)
+        else:
+            print("invalid: ", validTile)
     print("total tiles enumerated: " + str(len(sortedListOfTiles)))
     print("valid tiles: " + str(true))
 

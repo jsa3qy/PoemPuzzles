@@ -2,6 +2,7 @@ from objectDefinitions import *
 from string import punctuation
 from hyphen import *
 
+#returns a list of the words
 def readInRawPoem(myFile):
     listOfWords = []
     for line in myFile:
@@ -13,6 +14,7 @@ def readInRawPoem(myFile):
 
     return listOfWords
 
+#takes in a list of words and returns the syllables
 def returnListOfSyllables(listOfWords):
     h_en = Hyphenator('en_US')
     listOfSyls = []
@@ -27,6 +29,7 @@ def returnListOfSyllables(listOfWords):
 
     return listOfSyls
 
+#For when the poem is already split into syllables
 def readInSyllablePoem(myFile):
     listOfSyls = []
     for line in myFile:

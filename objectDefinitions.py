@@ -1,5 +1,5 @@
 
-
+import sys
 POEM_SIZE = 60
 
 class sylNode:
@@ -24,6 +24,13 @@ class ominoe:
         self.reachableIndices = []
         self.valid = True
 
+    def getIndicesInOminoe(self):
+        tempList = []
+        for i in self.sylList:
+            tempList.append(i.absolutePos)
+        tempList.sort()
+        return tempList
+
     def extendReachables(self, index):
         listOfSylsSize = POEM_SIZE
         reachablesFromIndex = listOfReachableIndices(index, listOfSylsSize)
@@ -37,7 +44,8 @@ class ominoe:
                     self.reachableIndices.append(index)
 
     def removeReachables(self, index):
-        self.reachableIndices.remove(index)
+        if (index in self.reachableIndices):
+            self.reachableIndices.remove(index)
 
     def stringToHash(self):
         tempList = []
@@ -66,7 +74,7 @@ class ominoe:
 def listOfReachableIndices(index, listOfSylsSize):
     #index is index in whole poem, that is, the #syllable
     reachable = []
-    if index>0 and (index%10 != 0):
+    if (index%10 != 0):
         reachable.append(index-1)
     if (index%10 != 9):
         reachable.append(index+1)
