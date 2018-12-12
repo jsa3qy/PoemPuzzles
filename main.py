@@ -17,6 +17,7 @@ def main():
         #AHHH CAN BE OPTIMIZED WITH TRIES OVER HASHMAP
         myOminoe = ominoe(5)
         myOminoe.reachableIndices+= listOfReachableIndices(i, 60)
+        extendOminoe(myOminoe, i, listOfSylNodes)
         expandInAllDirections(myOminoe, listOfSylNodes)
 
     #let's take valid tiles from the ominoe objects and sort them

@@ -15,7 +15,7 @@ def testForValidity(ListOfValsInOminoe):
                     if (isAdjacent(val, tempOminoe[j])):
                         tempCount+=1
             if (tempCount == 0):
-    
+
                 return False
             arrayOfCorrespondingIndicesTouched.append(tempCount)
             tempCount=0
@@ -45,6 +45,18 @@ def isAdjacent(num1, num2):
             return True
 
     return False
+
+def somethingWrongHere(ominoe):
+    somethingWrong = False
+    for i, val in enumerate(ominoe.reachableIndices):
+        adjacent = False
+        for j, val2 in enumerate(ominoe.getIndicesInOminoe()):
+            if (isAdjacent(val, val2)):
+                adjacent = True
+        if adjacent == False:
+            somethingWrong = True
+    return somethingWrong
+
 class touchPiece:
     def __init__(self, numTouching, index):
         self.numTouching = numTouching

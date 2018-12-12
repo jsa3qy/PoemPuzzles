@@ -44,7 +44,8 @@ class ominoe:
                     self.reachableIndices.append(index)
 
     def removeReachables(self, index):
-        self.reachableIndices.remove(index)
+        if (index in self.reachableIndices):
+            self.reachableIndices.remove(index)
 
     def stringToHash(self):
         tempList = []
