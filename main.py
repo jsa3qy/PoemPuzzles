@@ -15,7 +15,7 @@ def main():
 
     for i, node in enumerate(listOfSylNodes):
         #AHHH CAN BE OPTIMIZED WITH TRIES OVER HASHMAP
-        myOminoe = ominoe(5)
+        myOminoe = ominoe(6)
         myOminoe.reachableIndices+= listOfReachableIndices(i, 60)
         extendOminoe(myOminoe, i, listOfSylNodes)
         expandInAllDirections(myOminoe, listOfSylNodes)
@@ -23,7 +23,7 @@ def main():
     #let's take valid tiles from the ominoe objects and sort them
     sortedListOfTiles = []
     for validTile in listOfTiles:
-        sortedListOfTiles.append(validTile.getTile())
+        sortedListOfTiles.append(validTile.getIndicesInOminoe())
 
     sortedListOfTiles.sort(key=lambda x: x[0])
     true = 0

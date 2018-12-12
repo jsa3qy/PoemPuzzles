@@ -27,6 +27,7 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
     maybeNode = listOfSylNodes[index]
     #so I an check before verses after for debugging
     copyOfOminoe = copy.deepcopy(curOminoe)
+
     if curOminoe.sylAvailable >= maybeNode.wordSize:
         curOminoe.sylList.append(listOfSylNodes[index])
         curOminoe.removeReachables(index)
@@ -40,26 +41,19 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
             print(copyOfOminoe.reachableIndices)
 
             print("\n")'''
-
         if (maybeNode.sylLeft > 0):
             for node in range(1,maybeNode.sylLeft+1):
                 left = True
                 curOminoe.sylList.append(listOfSylNodes[index - node])
                 curOminoe.removeReachables(index-node)
                 curOminoe.extendReachables(index-node)
-                #if somethingWrongHere(curOminoe):
-                    #print("left")
         if (maybeNode.sylRight > 0):
             for node in range(1,maybeNode.sylRight+1):
                 right = True
                 curOminoe.sylList.append(listOfSylNodes[index+node])
                 curOminoe.removeReachables(index+node)
                 curOminoe.extendReachables(index+node)
-                #if somethingWrongHere(curOminoe):
-                    #print("right")
         curOminoe.sylAvailable -= maybeNode.wordSize
-
-
     else:
         curOminoe.removeReachables(index)
         for node in range(1,maybeNode.sylLeft+1):
@@ -68,30 +62,11 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
         for node in range(1,maybeNode.sylRight+1):
             if (node+index) in curOminoe.reachableIndices:
                 curOminoe.removeReachables(index+node)
-
-
-    '''if (copyOfOminoe.sylAvailable < 5 and (testForValidity(curOminoe.getIndicesInOminoe()) == False) and (testForValidity(copyOfOminoe.getIndicesInOminoe()))):
-        print("reachables: ")
-        print(copyOfOminoe.reachableIndices)
-        print(copyOfOminoe.getIndicesInOminoe())
-        print("\n")
-        print(curOminoe.getIndicesInOminoe())
-        print("\n")
-        print("in left? ")
-        print(left)
-        print("in right?")
-        print(right)
-        print("done")
-
-        if (len(copyOfOminoe.sylList) > 4):
-            sys.exit(0)'''
     return curOminoe
 
 def expandInAllDirections(ominoe, listOfSylNodes):
     global listOfTiles
     global alreadyCounted
-    #don't need this?
-
     tempOminoe = copy.deepcopy(ominoe)
     indexNum = 0
     while (indexNum < len(tempOminoe.reachableIndices)):
@@ -112,3 +87,16 @@ def expandInAllDirections(ominoe, listOfSylNodes):
             expandInAllDirections(ominoe, listOfSylNodes)
         indexNum+=1
     return
+
+def listOfReachableIndices(index, listOfSylsSize):
+    #index is index in whole poem, that is, the #syllable
+    reachable = []
+    if (index%10 != 0):
+        reachable.append(index-1)
+    if (index%10 != 9):
+        reachable.append(index+1)
+    if index + 10 < listOfSylsSize:
+        reachable.append(index+10)
+    if index >= 10:
+        reachable.append(index-10)
+    return reachable
