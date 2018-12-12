@@ -15,6 +15,7 @@ def testForValidity(ListOfValsInOminoe):
                     if (isAdjacent(val, tempOminoe[j])):
                         tempCount+=1
             if (tempCount == 0):
+    
                 return False
             arrayOfCorrespondingIndicesTouched.append(tempCount)
             tempCount=0
@@ -40,7 +41,7 @@ def markAllAdjacent(index):
 
 def isAdjacent(num1, num2):
     if ((math.fabs(num1 - num2) == 1) or (math.fabs(num1 - num2) == 10)):
-        if (not (num1%10 + num2%10 == 1)):
+        if (not ((num1%10 == 0 and num2%10 == 9) or (num1%10 == 9 and num2%10 == 0))):
             return True
 
     return False

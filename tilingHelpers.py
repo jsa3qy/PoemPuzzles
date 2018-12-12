@@ -1,5 +1,7 @@
 from objectDefinitions import *
 import copy
+import sys
+from test import testForValidity
 
 listOfTiles = []
 alreadyCounted = {}
@@ -21,18 +23,22 @@ def makeMasterListOfSyllables(listOfSyls):
 
 def extendOminoe(curOminoe, index, listOfSylNodes):
     maybeNode = listOfSylNodes[index]
+    #so I an check before verses after for debugging
+    copyOfOminoe = copy.deepcopy(curOminoe)
     if curOminoe.sylAvailable >= maybeNode.wordSize:
         curOminoe.sylList.append(listOfSylNodes[index])
-        curOminoe.extendReachables(index)
         curOminoe.removeReachables(index)
-        for node in range(1,maybeNode.sylLeft+1):
-            curOminoe.sylList.append(listOfSylNodes[index - node])
-            curOminoe.extendReachables(index-node)
-            curOminoe.removeReachables(index-node)
-        for node in range(1,maybeNode.sylRight+1):
-            curOminoe.sylList.append(listOfSylNodes[index+node])
-            curOminoe.extendReachables(index+node)
-            curOminoe.removeReachables(index+node)
+        curOminoe.extendReachables(index)
+        if (maybeNode.sylLeft > 0):
+            for node in range(1,maybeNode.sylLeft+1):
+                curOminoe.sylList.append(listOfSylNodes[index - node])
+                curOminoe.removeReachables(index-node)
+                curOminoe.extendReachables(index-node)
+        if (maybeNode.sylRight > 0):
+            for node in range(1,maybeNode.sylRight+1):
+                curOminoe.sylList.append(listOfSylNodes[index+node])
+                curOminoe.removeReachables(index+node)
+                curOminoe.extendReachables(index+node)
         curOminoe.sylAvailable -= maybeNode.wordSize
     else:
         curOminoe.removeReachables(index)
@@ -42,23 +48,42 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
         for node in range(1,maybeNode.sylRight+1):
             if (node+index) in curOminoe.reachableIndices:
                 curOminoe.removeReachables(index+node)
+
+
+    if (copyOfOminoe.sylAvailable < 5 and (testForValidity(curOminoe.getIndicesInOminoe()) == False) and (testForValidity(copyOfOminoe.getIndicesInOminoe()))):
+        print("reachables: ")
+        print(copyOfOminoe.reachableIndices)
+        print(copyOfOminoe.getIndicesInOminoe())
+        print("\n")
+        print(curOminoe.getIndicesInOminoe())
+        print("\n")
+        print("done")
+        if (len(copyOfOminoe.sylList) > 4):
+            sys.exit(0)
     return curOminoe
 
 def expandInAllDirections(ominoe, listOfSylNodes):
     global listOfTiles
     global alreadyCounted
     #don't need this?
-    tempReachableIndices = copy.deepcopy(ominoe.reachableIndices)
+
     tempOminoe = copy.deepcopy(ominoe)
-    for index in tempOminoe.reachableIndices:
-        tempOminoe = extendOminoe(tempOminoe, index, listOfSylNodes)
+    indexNum = 0
+    while (indexNum < len(tempOminoe.reachableIndices)):
+        index = tempOminoe.reachableIndices[indexNum]
+        if (tempOminoe.sylAvailable > 0):
+            tempOminoe = extendOminoe(tempOminoe, index, listOfSylNodes)
         if tempOminoe.sylAvailable == 0:
-            if alreadyCounted.get(tempOminoe.stringToHash()) != None:
-                continue
-            else:
+            if alreadyCounted.get(tempOminoe.stringToHash()) == None:
                 alreadyCounted[tempOminoe.stringToHash()] = 1
                 listOfTiles.append(tempOminoe)
-        expandInAllDirections(tempOminoe, listOfSylNodes)
+                return
+        if (tempOminoe.sylAvailable > 0):
+            expandInAllDirections(tempOminoe, listOfSylNodes)
         if index in ominoe.reachableIndices:
-            ominoe.removeReachables(index)
-        expandInAllDirections(ominoe, listOfSylNodes)
+            if (ominoe.sylAvailable > 0):
+                ominoe.removeReachables(index)
+        if (ominoe.sylAvailable > 0) and (len(ominoe.reachableIndices) > 0):
+            expandInAllDirections(ominoe, listOfSylNodes)
+        indexNum+=1
+    return
