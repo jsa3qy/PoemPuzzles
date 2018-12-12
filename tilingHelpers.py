@@ -6,6 +6,7 @@ from test import *
 listOfTiles = []
 alreadyCounted = {}
 
+#build the list of node objects
 def makeSylNodes(listOfSyls):
     listOfSylNodes = []
     for numWord, word in enumerate(listOfSyls):
@@ -14,6 +15,7 @@ def makeSylNodes(listOfSyls):
             listOfSylNodes.append(tempNode)
     return listOfSylNodes
 
+#build a master list of syllables with absolute position
 def makeMasterListOfSyllables(listOfSyls):
     masterListOfSyls = []
     for numWord, word in enumerate(listOfSyls):
@@ -21,6 +23,8 @@ def makeMasterListOfSyllables(listOfSyls):
             masterListOfSyls.append(syl)
     return masterListOfSyls
 
+#will add an index and the rest of the word that index is a part of to the ominoe if possible
+#also takes care of reachable indices as a result
 def extendOminoe(curOminoe, index, listOfSylNodes):
     left = False
     right = False
@@ -64,6 +68,8 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
                 curOminoe.removeReachables(index+node)
     return curOminoe
 
+#recursive function, will go through all indices and try to expand the ominoe to those indices.
+#calls itself on the original passed in ominoe as well as the new ominoe with an added index to it.
 def expandInAllDirections(ominoe, listOfSylNodes):
     global listOfTiles
     global alreadyCounted
@@ -88,6 +94,7 @@ def expandInAllDirections(ominoe, listOfSylNodes):
         indexNum+=1
     return
 
+#get's the list of reaachable indices from any given index given the size of the poem and the index
 def listOfReachableIndices(index, listOfSylsSize):
     #index is index in whole poem, that is, the #syllable
     reachable = []
