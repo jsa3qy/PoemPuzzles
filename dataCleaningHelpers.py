@@ -2,7 +2,7 @@ from objectDefinitions import *
 from string import punctuation
 from hyphen import *
 
-#returns a list of the words 
+#returns a list of the words
 def readInRawPoem(myFile):
     listOfWords = []
     for line in myFile:

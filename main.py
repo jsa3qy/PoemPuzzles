@@ -27,11 +27,13 @@ def main():
     sortedListOfTiles.sort(key=lambda x: x[0])
     true = 0
     for validTile in sortedListOfTiles:
-        valid = testForValidity2(validTile) and testForValidity(validTile)
+        valid = testForValidity(validTile)
         if valid:
             true+=1
         if valid:
-            print(validTile)
+            print("valid: ",validTile)
+        else:
+            print("invalid: ", validTile)
     print("total tiles enumerated: " + str(len(sortedListOfTiles)))
     print("valid tiles: " + str(true))
 

@@ -47,6 +47,7 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
 def expandInAllDirections(ominoe, listOfSylNodes):
     global listOfTiles
     global alreadyCounted
+    #don't need this?
     tempReachableIndices = copy.deepcopy(ominoe.reachableIndices)
     tempOminoe = copy.deepcopy(ominoe)
     for index in tempOminoe.reachableIndices:
