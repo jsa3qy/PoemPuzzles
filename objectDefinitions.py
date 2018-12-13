@@ -3,10 +3,6 @@ import sys
 
 
 POEM_SIZE = 60
-class simpleOminoe:
-    def __init__(self,tag,listOfIndices):
-        self.tag = tag
-        self.listOfIndices = listOfIndices
 
 class sylNode:
     #constructor

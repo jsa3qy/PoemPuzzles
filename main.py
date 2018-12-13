@@ -34,26 +34,14 @@ def main():
         random.shuffle(sortedListOfTiles)
         true = 0
         #print("Done with tile enumeration, finding a valid tiling!")
-        simpleOminoes = []
-        for i in sortedListOfTiles:
-            tempString = ""
-            for val in i:
-                tempString+=str(val)
-            simpleOminoes.append(simpleOminoe(tempString,i))
-        universeList = []
-        for i in range(60):
-            universeList.append(i)
-
-
-        #random.shuffle(simpleOminoes)
+        #exact cover time
         listOfUsableInputs = []
-        for tile in simpleOminoes:
+        for tile in sortedListOfTiles:
             referenceTile = np.zeros(60)
-            for index in tile.listOfIndices:
+            for index in tile:
                 referenceTile[index] += 1
             listOfUsableInputs.append(referenceTile)
         S = np.array(listOfUsableInputs, dtype='int32')
-
         cover = ec.get_exact_cover(S)
 
         finalList = []
@@ -68,7 +56,6 @@ def main():
         for i, val in enumerate(check):
             if val != 1:
                 valid = False
-
         if valid:
             validCount+=1
             for i in finalList:
@@ -85,11 +72,6 @@ def main():
 
         boardTile = np.reshape(boardTile,(6,10))
         print(boardTile)
-            #print("The solution is a valid solution")
-
-            #print("The solution is invalid, something must have gone wrong")
-        #simpleOminoes.pop(cover[0])'''
-
 
 if __name__ == "__main__":
     main()
