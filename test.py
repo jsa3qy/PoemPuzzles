@@ -19,6 +19,7 @@ def testForValidity(ListOfValsInOminoe):
         touchPieces.clear()
         return True
 
+#recurvie function that breadth first marks indices as seen as a helper to testForValidity()
 def markAllAdjacent(index):
     for i, val in enumerate(touchPieces):
         if (isAdjacent(val.index, index) and val.seen == False):
@@ -26,6 +27,7 @@ def markAllAdjacent(index):
             markAllAdjacent(touchPieces[i].index)
     return
 
+#are two numbers adjacent? returns boolean
 def isAdjacent(num1, num2):
     if ((math.fabs(num1 - num2) == 1) or (math.fabs(num1 - num2) == 10)):
         if (not ((num1%10 == 0 and num2%10 == 9) or (num1%10 == 9 and num2%10 == 0))):
@@ -45,7 +47,8 @@ def somethingWrongHere(ominoe):
             somethingWrong = True
     return somethingWrong
 
+#used to help with the validity check
 class touchPiece:
-    def __init__(self, numTouching, index):
+    def __init__(self,index):
         self.index = index
         self.seen = False

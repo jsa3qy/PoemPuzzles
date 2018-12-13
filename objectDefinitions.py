@@ -1,6 +1,6 @@
 
 import sys
-from tilingHelpers import *
+
 
 POEM_SIZE = 60
 
@@ -69,3 +69,17 @@ class ominoe:
         tempList.sort()
         print(tempList)
         return tempList
+
+#get's the list of reaachable indices from any given index given the size of the poem and the index
+def listOfReachableIndices(index, listOfSylsSize):
+    #index is index in whole poem, that is, the #syllable
+    reachable = []
+    if (index%10 != 0):
+        reachable.append(index-1)
+    if (index%10 != 9):
+        reachable.append(index+1)
+    if index + 10 < listOfSylsSize:
+        reachable.append(index+10)
+    if index >= 10:
+        reachable.append(index-10)
+    return reachable
