@@ -75,12 +75,15 @@ def main():
                 print(i)
             print('\n')
     print(validCount)
-    '''for tile in finalList:
+    for tile in finalList:
         boardTile = np.empty(60,  dtype='|S6')
         boardTile.flatten()
+        for i in range(60):
+            boardTile[i] = "."
         for index in tile:
-            boardTile[index] = masterListOfSyllables[index]
-        boardTile.reshape((6,10))
+            boardTile[index] = "X"#masterListOfSyllables[index]
+
+        boardTile = np.reshape(boardTile,(6,10))
         print(boardTile)
             #print("The solution is a valid solution")
 
