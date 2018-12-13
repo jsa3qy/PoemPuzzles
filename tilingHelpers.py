@@ -1,11 +1,12 @@
-from objectDefinitions import *
 import copy
 import sys
 from test import *
+from objectDefinitions import *
 
 listOfTiles = []
 alreadyCounted = {}
 
+#build the list of node objects
 def makeSylNodes(listOfSyls):
     listOfSylNodes = []
     for numWord, word in enumerate(listOfSyls):
@@ -14,6 +15,7 @@ def makeSylNodes(listOfSyls):
             listOfSylNodes.append(tempNode)
     return listOfSylNodes
 
+#build a master list of syllables with absolute position
 def makeMasterListOfSyllables(listOfSyls):
     masterListOfSyls = []
     for numWord, word in enumerate(listOfSyls):
@@ -21,12 +23,15 @@ def makeMasterListOfSyllables(listOfSyls):
             masterListOfSyls.append(syl)
     return masterListOfSyls
 
+#will add an index and the rest of the word that index is a part of to the ominoe if possible
+#also takes care of reachable indices as a result
 def extendOminoe(curOminoe, index, listOfSylNodes):
     left = False
     right = False
     maybeNode = listOfSylNodes[index]
     #so I an check before verses after for debugging
     copyOfOminoe = copy.deepcopy(curOminoe)
+
     if curOminoe.sylAvailable >= maybeNode.wordSize:
         curOminoe.sylList.append(listOfSylNodes[index])
         curOminoe.removeReachables(index)
@@ -40,26 +45,19 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
             print(copyOfOminoe.reachableIndices)
 
             print("\n")'''
-
         if (maybeNode.sylLeft > 0):
             for node in range(1,maybeNode.sylLeft+1):
                 left = True
                 curOminoe.sylList.append(listOfSylNodes[index - node])
                 curOminoe.removeReachables(index-node)
                 curOminoe.extendReachables(index-node)
-                #if somethingWrongHere(curOminoe):
-                    #print("left")
         if (maybeNode.sylRight > 0):
             for node in range(1,maybeNode.sylRight+1):
                 right = True
                 curOminoe.sylList.append(listOfSylNodes[index+node])
                 curOminoe.removeReachables(index+node)
                 curOminoe.extendReachables(index+node)
-                #if somethingWrongHere(curOminoe):
-                    #print("right")
         curOminoe.sylAvailable -= maybeNode.wordSize
-
-
     else:
         curOminoe.removeReachables(index)
         for node in range(1,maybeNode.sylLeft+1):
@@ -68,30 +66,13 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
         for node in range(1,maybeNode.sylRight+1):
             if (node+index) in curOminoe.reachableIndices:
                 curOminoe.removeReachables(index+node)
-
-
-    '''if (copyOfOminoe.sylAvailable < 5 and (testForValidity(curOminoe.getIndicesInOminoe()) == False) and (testForValidity(copyOfOminoe.getIndicesInOminoe()))):
-        print("reachables: ")
-        print(copyOfOminoe.reachableIndices)
-        print(copyOfOminoe.getIndicesInOminoe())
-        print("\n")
-        print(curOminoe.getIndicesInOminoe())
-        print("\n")
-        print("in left? ")
-        print(left)
-        print("in right?")
-        print(right)
-        print("done")
-
-        if (len(copyOfOminoe.sylList) > 4):
-            sys.exit(0)'''
     return curOminoe
 
+#recursive function, will go through all indices and try to expand the ominoe to those indices.
+#calls itself on the original passed in ominoe as well as the new ominoe with an added index to it.
 def expandInAllDirections(ominoe, listOfSylNodes):
     global listOfTiles
     global alreadyCounted
-    #don't need this?
-
     tempOminoe = copy.deepcopy(ominoe)
     indexNum = 0
     while (indexNum < len(tempOminoe.reachableIndices)):

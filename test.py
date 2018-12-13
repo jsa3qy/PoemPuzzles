@@ -8,21 +8,8 @@ touchPieces = []
 def testForValidity(ListOfValsInOminoe):
         tempOminoe = copy.deepcopy(ListOfValsInOminoe)
         arrayOfCorrespondingIndicesTouched = []
-        tempCount = 0
-        for i, val in enumerate(tempOminoe):
-            for j in range(0, len(tempOminoe)):
-                if (i!=j):
-                    if (isAdjacent(val, tempOminoe[j])):
-                        tempCount+=1
-            if (tempCount == 0):
-
-                return False
-            arrayOfCorrespondingIndicesTouched.append(tempCount)
-            tempCount=0
-
         for i,val in enumerate(tempOminoe):
-            touchPieces.append(touchPiece(arrayOfCorrespondingIndicesTouched[i],val))
-        touchPieces.sort(key= lambda touchPiece: touchPiece.numTouching)
+            touchPieces.append(touchPiece(val))
         startPoint = touchPieces[0]
         markAllAdjacent(startPoint.index)
         for i in touchPieces:
@@ -32,6 +19,7 @@ def testForValidity(ListOfValsInOminoe):
         touchPieces.clear()
         return True
 
+#recurvie function that breadth first marks indices as seen as a helper to testForValidity()
 def markAllAdjacent(index):
     for i, val in enumerate(touchPieces):
         if (isAdjacent(val.index, index) and val.seen == False):
@@ -39,6 +27,7 @@ def markAllAdjacent(index):
             markAllAdjacent(touchPieces[i].index)
     return
 
+#are two numbers adjacent? returns boolean
 def isAdjacent(num1, num2):
     if ((math.fabs(num1 - num2) == 1) or (math.fabs(num1 - num2) == 10)):
         if (not ((num1%10 == 0 and num2%10 == 9) or (num1%10 == 9 and num2%10 == 0))):
@@ -46,6 +35,7 @@ def isAdjacent(num1, num2):
 
     return False
 
+#specifically what's wrong is that the reachable indices do not match the indices that are in the ominoe
 def somethingWrongHere(ominoe):
     somethingWrong = False
     for i, val in enumerate(ominoe.reachableIndices):
@@ -57,8 +47,8 @@ def somethingWrongHere(ominoe):
             somethingWrong = True
     return somethingWrong
 
+#used to help with the validity check
 class touchPiece:
-    def __init__(self, numTouching, index):
-        self.numTouching = numTouching
+    def __init__(self,index):
         self.index = index
         self.seen = False
