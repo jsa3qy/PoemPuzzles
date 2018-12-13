@@ -28,46 +28,64 @@ def main():
     sortedListOfTiles = []
     for validTile in listOfTiles:
         sortedListOfTiles.append(validTile.getIndicesInOminoe())
+    validCount =0
+    for i in range(10):
+        sortedListOfTiles.sort(key=lambda x: x[0])
+        random.shuffle(sortedListOfTiles)
+        true = 0
+        #print("Done with tile enumeration, finding a valid tiling!")
+        simpleOminoes = []
+        for i in sortedListOfTiles:
+            tempString = ""
+            for val in i:
+                tempString+=str(val)
+            simpleOminoes.append(simpleOminoe(tempString,i))
+        universeList = []
+        for i in range(60):
+            universeList.append(i)
 
-    sortedListOfTiles.sort(key=lambda x: x[0])
-    true = 0
-    print("Done with tile enumeration, finding a valid tiling!")
-    simpleOminoes = []
-    for i in sortedListOfTiles:
-        tempString = ""
-        for val in i:
-            tempString+=str(val)
-        simpleOminoes.append(simpleOminoe(tempString,i))
-    universeList = []
-    for i in range(60):
-        universeList.append(i)
 
-    listOfUsableInputs = []
-    for tile in simpleOminoes:
-        referenceTile = np.zeros(60)
-        for index in tile.listOfIndices:
-            referenceTile[index] += 1
-        listOfUsableInputs.append(referenceTile)
-    S = np.array(listOfUsableInputs, dtype='int32')
-    cover = ec.get_exact_cover(S)
+        #random.shuffle(simpleOminoes)
+        listOfUsableInputs = []
+        for tile in simpleOminoes:
+            referenceTile = np.zeros(60)
+            for index in tile.listOfIndices:
+                referenceTile[index] += 1
+            listOfUsableInputs.append(referenceTile)
+        S = np.array(listOfUsableInputs, dtype='int32')
 
-    finalList = []
-    for i in cover:
-        finalList.append(sortedListOfTiles[i])
-    for i in finalList:
-        print(i)
-    check = np.zeros(60)
-    for tile in finalList:
-        for val in tile:
-            check[val]+=1
-    valid = True
-    for i, val in enumerate(check):
-        if val != 1:
-            valid = False
-    if valid:
-        print("The solution is a valid solution")
-    if not valid:
-        print("The solution is invalid, something must have gone wrong")
+        cover = ec.get_exact_cover(S)
+
+        finalList = []
+        for i in cover:
+            finalList.append(sortedListOfTiles[i])
+
+        check = np.zeros(60)
+        for tile in finalList:
+            for val in tile:
+                check[val]+=1
+        valid = True
+        for i, val in enumerate(check):
+            if val != 1:
+                valid = False
+
+        if valid:
+            validCount+=1
+            for i in finalList:
+                print(i)
+            print('\n')
+    print(validCount)
+    '''for tile in finalList:
+        boardTile = np.empty(60,  dtype='|S6')
+        boardTile.flatten()
+        for index in tile:
+            boardTile[index] = masterListOfSyllables[index]
+        boardTile.reshape((6,10))
+        print(boardTile)
+            #print("The solution is a valid solution")
+
+            #print("The solution is invalid, something must have gone wrong")
+        #simpleOminoes.pop(cover[0])'''
 
 
 if __name__ == "__main__":
