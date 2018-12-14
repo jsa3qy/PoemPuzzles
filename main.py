@@ -19,7 +19,7 @@ def main():
 
     for i, node in enumerate(listOfSylNodes):
         #AHHH CAN BE OPTIMIZED WITH TRIES OVER HASHMAP
-        myOminoe = ominoe(5)
+        myOminoe = ominoe(6)
         myOminoe.reachableIndices+= listOfReachableIndices(i, 60)
         extendOminoe(myOminoe, i, listOfSylNodes)
         expandInAllDirections(myOminoe, listOfSylNodes)
@@ -28,12 +28,14 @@ def main():
     sortedListOfTiles = []
     for validTile in listOfTiles:
         sortedListOfTiles.append(validTile.getIndicesInOminoe())
+
     validCount =0
     for i in range(10):
         sortedListOfTiles.sort(key=lambda x: x[0])
         random.shuffle(sortedListOfTiles)
         true = 0
-        #print("Done with tile enumeration, finding a valid tiling!")
+        print("Done with tile enumeration, finding a valid tiling!")
+        print("num tiles: " + str(len(sortedListOfTiles)))
         #exact cover time
         listOfUsableInputs = []
         for tile in sortedListOfTiles:
@@ -62,16 +64,20 @@ def main():
                 print(i)
             print('\n')
     print(validCount)
-    for tile in finalList:
+    for indexT, tile in enumerate(finalList):
         boardTile = np.empty(60,  dtype='|S6')
         boardTile.flatten()
-        for i in range(60):
-            boardTile[i] = "."
+        for j in range(60):
+            boardTile[j] = "."
         for index in tile:
             boardTile[index] = "X"#masterListOfSyllables[index]
 
         boardTile = np.reshape(boardTile,(6,10))
+        print("\n")
+        print("Tile: " + str(tile))
+        print("Tile Number:" + str(indexT))
         print(boardTile)
+
 
 if __name__ == "__main__":
     main()
