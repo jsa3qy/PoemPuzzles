@@ -7,9 +7,10 @@ if you want to add something to master, let's make a branch called trunk (git br
 off of trunk make a branch called doit (where you will do the think you want to do)
 build on doit and PR against trunk. Then once you merge with trunk make sure that it works and then PR against master
 
----------------------
 
-the important thing is that we are using python 2.7.x from the beginning and for everything.
+How to get it working on a new machine!
+
+the important thing is that we are using python 2.7.x from the beginning and for everything. 
 
 0) clone PoemPuzzles, and then 'rm -r exact_cover_np' if it's already in there and then git clone the exact_cover_np repo --> cd into this exact cover repo
 github clone-able links:
