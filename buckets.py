@@ -20,6 +20,11 @@ class simpleNode:
     def __init__(self, val):
         self.val = val
         self.seen = False
+        self.leftValid = True
+        self.rightValid = True
+        self.upValid = True
+        self.downValid = True
+        self.startNode = False
 
 def hashTheOminoes(listOfSimpleOminoes):
     for simpleO in listOfSimpleOminoes:
@@ -35,14 +40,39 @@ def hashTheOminoes(listOfSimpleOminoes):
     print(summation)
     #print(buckets.keys())
 
-#ouch, we have to find a way to traverse the perimeter 
+#ouch, we have to find a way to traverse the perimeter
 def buildSimpleOminoes(listOfRawTiles):
-
     masterListOfSimpleOminoes = []
     for tile in listOfRawTiles:
         curOminoeBeforeCopy = simpleOminoe()
         curOminoe = copy.deepcopy(curOminoeBeforeCopy)
-        for index, outerVal in enumerate(tile):
-            if outerVal+1 not in tile:
-                curOminoe.right.append()
-    return masterListOfSimpleOminoes
+        indexOfMax = tile.index(max(tile))
+        tileOfNodes = makeATileOfSimpleNodes(tile)
+        curNode = tileOfNodes[indexOfMax]
+        iCanGoLeft = True
+        while iCanGoLeft:
+            #if there's another node to our left, AND that node doesn't have a node below it
+            if (curNode.val -1 in tile) and (tileOfNodes[tile.index(curNode.val -1)].downValid):
+                curNode = tileOfNodes[tile.index(curNode.val -1)]
+            else:
+                iCanGoLeft = False
+                curNode.startNode = True
+        #Now we traverse up and go around the whole ominoe, when we try to go up on a node with .startNode == True, we are done
+        
+
+
+
+def makeATileOfSimpleNodes(tile):
+    returnList = []
+    for i in tile:
+        newNode = simplenode(i)
+        if (i-1 in tile):
+            newNode.leftValid = False
+        if (i+1 in tile):
+            newNode.rightValid = False
+        if (i+10 in tile):
+            newNode.downValid = False
+        if (i-10 in tile):
+            newNode.upValid = False
+        returnList.append(newNode)
+    return returnList
