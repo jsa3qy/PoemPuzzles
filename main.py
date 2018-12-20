@@ -33,7 +33,7 @@ def main():
 
     builtListOfSimpleOminoes = buildSimpleOminoes(sortedListOfTiles)
     hashTheOminoes(builtListOfSimpleOminoes)
-    #sys.exit(0)
+    sys.exit(0)
 
     validCount =0
     for i in range(10):
