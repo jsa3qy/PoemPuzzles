@@ -6,7 +6,9 @@ from setCover import *
 import numpy as np
 import random
 import exact_cover_np as ec
-
+from buckets import *
+import sys
+OMINOE_SIZE = 5
 def main():
     myFile = open("poem.txt")
     #otherFile = open("syllablizedPoemOneSyllablePerWord.txt")
@@ -19,7 +21,7 @@ def main():
 
     for i, node in enumerate(listOfSylNodes):
         #AHHH CAN BE OPTIMIZED WITH TRIES OVER HASHMAP
-        myOminoe = ominoe(6)
+        myOminoe = ominoe(OMINOE_SIZE)
         myOminoe.reachableIndices+= listOfReachableIndices(i, 60)
         extendOminoe(myOminoe, i, listOfSylNodes)
         expandInAllDirections(myOminoe, listOfSylNodes)
@@ -29,12 +31,16 @@ def main():
     for validTile in listOfTiles:
         sortedListOfTiles.append(validTile.getIndicesInOminoe())
 
+    builtListOfSimpleOminoes = buildSimpleOminoes(sortedListOfTiles)
+    hashTheOminoes(builtListOfSimpleOminoes)
+    #sys.exit(0)
+
     validCount =0
     for i in range(10):
         sortedListOfTiles.sort(key=lambda x: x[0])
         random.shuffle(sortedListOfTiles)
         true = 0
-        print("Done with tile enumeration, finding a valid tiling!")
+        #print("Done with tile enumeration, finding a valid tiling!")
         print("num tiles: " + str(len(sortedListOfTiles)))
         #exact cover time
         listOfUsableInputs = []
