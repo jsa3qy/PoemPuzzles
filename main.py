@@ -32,7 +32,8 @@ def main():
         sortedListOfTiles.append(validTile.getIndicesInOminoe())
 
     builtListOfSimpleOminoes = buildSimpleOminoes(sortedListOfTiles)
-    hashTheOminoes(builtListOfSimpleOminoes)
+    placeIntoBuckets(builtListOfSimpleOminoes)
+
     sys.exit(0)
 
     validCount =0
