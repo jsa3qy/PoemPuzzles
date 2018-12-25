@@ -19,7 +19,7 @@ class simpleNode:
         self.val = val
         self.seen = False
 
-def hashTheOminoes(listOfSimpleOminoes):
+'''def hashTheOminoes(listOfSimpleOminoes):
     for simpleO in listOfSimpleOminoes:
         if buckets.get(simpleO.hash) == None:
             buckets[simpleO.hash] = [simpleO]
@@ -31,7 +31,7 @@ def hashTheOminoes(listOfSimpleOminoes):
         print(key + " " + str(len(buckets.get(key))))
         summation+=len(buckets.get(key))
     print(summation)
-    #print(buckets.keys())
+    #print(buckets.keys())'''
 
 def placeIntoBuckets(listOfSimpleOminoes):
     buckets.append([listOfSimpleOminoes[0]])
@@ -47,7 +47,6 @@ def placeIntoBuckets(listOfSimpleOminoes):
                 added = True
                 numBuckets = 0
             elif (numBuckets < len(buckets)) and twoTilesSame(ominoe,buckets[numBuckets][0]):
-                print("yup", numBuckets)
                 buckets[numBuckets].append(ominoe)
                 added = True
                 numBuckets = 0
@@ -55,12 +54,11 @@ def placeIntoBuckets(listOfSimpleOminoes):
             else:
                 numBuckets+=1
 
-    print(len(buckets))
+    #print(len(buckets))
     #print(buckets)
 
-    for i in buckets:
-        showTilesVisually(i[0].tile)
-
+    #for i in buckets:
+        #showTilesVisually(i[0].tile)
         '''for node in orientation:
             print("up",node.up)
             print("down",node.down)
