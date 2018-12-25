@@ -8,11 +8,17 @@ import random
 import exact_cover_np as ec
 from buckets import *
 import sys
+from string import ascii_uppercase
 
+#12 types of pentominoes, 30 types of hexominoes, 76 types of septominoes
 
-OMINOE_SIZE = 5
+OMINOE_SIZE = 7
 POEM_SIZE = 60
+
 def main():
+    if POEM_SIZE%OMINOE_SIZE != 0:
+        print("NOT A POSSIBLE TILING")
+        sys.exit(1)
     myFile = open("poem.txt")
     #otherFile = open("syllablizedPoemOneSyllablePerWord.txt")
     otherFile = open("syllablizedPoem.txt")
@@ -28,14 +34,17 @@ def main():
         myOminoe.reachableIndices+= listOfReachableIndices(i, POEM_SIZE)
         extendOminoe(myOminoe, i, listOfSylNodes)
         expandInAllDirections(myOminoe, listOfSylNodes)
-
+    print("done expanding...")
     #let's take valid tiles from the ominoe objects and sort them
     sortedListOfTiles = []
     for validTile in listOfTiles:
         sortedListOfTiles.append(validTile.getIndicesInOminoe())
-
+    print("building simple ominoes")
     builtListOfSimpleOminoes = buildSimpleOminoes(sortedListOfTiles)
+    print("built simple ominoes")
+    print(len(sortedListOfTiles))
     placeIntoBuckets(builtListOfSimpleOminoes)
+    print("number of different ominoes:",len(buckets))
 
     validCount = 0
     sortedListOfTilesCopy = copy.deepcopy(sortedListOfTiles)
@@ -76,6 +85,8 @@ def main():
                 for index in tile:
                     referenceTile[index] += 1
                 listOfUsableInputs.append(referenceTile)
+
+
             S = np.array(listOfUsableInputs, dtype='int32')
             cover = ec.get_exact_cover(S)
 
@@ -96,21 +107,27 @@ def main():
             for i in finalList:
                 print(i)
             print('\n')
-    print(validCount)
+        else:
+            print("invalid tiling")
+            #sys.exit(1)
+
+    finalListToDisplay = []
+    boardTile = np.empty(POEM_SIZE,  dtype='|S6')
+    boardTile.flatten()
+    for index, val in enumerate(boardTile):
+        boardTile[index] = ''
+    letterIndex = 0
+
     for indexT, tile in enumerate(finalList):
-        boardTile = np.empty(POEM_SIZE,  dtype='|S6')
-        boardTile.flatten()
-        for j in range(POEM_SIZE):
-            boardTile[j] = "."
         for index in tile:
             if index < POEM_SIZE:
-                boardTile[index] = "X"#masterListOfSyllables[index]
+                boardTile[index] = ascii_uppercase[letterIndex]
+        letterIndex+=1
 
-        boardTile = np.reshape(boardTile,(6,10))
-        print("\n")
-        print("Tile: " + str(tile))
-        print("Tile Number:" + str(indexT))
-        print(boardTile)
+    boardTile = np.reshape(boardTile,(6,10))
+    print(boardTile)
+
+
 
 
 if __name__ == "__main__":

@@ -19,20 +19,6 @@ class simpleNode:
         self.val = val
         self.seen = False
 
-'''def hashTheOminoes(listOfSimpleOminoes):
-    for simpleO in listOfSimpleOminoes:
-        if buckets.get(simpleO.hash) == None:
-            buckets[simpleO.hash] = [simpleO]
-        else:
-            buckets.get(simpleO.hash).append(simpleO)
-    keys = buckets.keys()
-    summation = 0
-    for key in keys:
-        print(key + " " + str(len(buckets.get(key))))
-        summation+=len(buckets.get(key))
-    print(summation)
-    #print(buckets.keys())'''
-
 def placeIntoBuckets(listOfSimpleOminoes):
     buckets.append([listOfSimpleOminoes[0]])
     numBuckets = 0
@@ -44,6 +30,7 @@ def placeIntoBuckets(listOfSimpleOminoes):
         while (not added):
             if (numBuckets == len(buckets)):
                 buckets.append([ominoe])
+                print(len(buckets))
                 added = True
                 numBuckets = 0
             elif (numBuckets < len(buckets)) and twoTilesSame(ominoe,buckets[numBuckets][0]):
@@ -53,19 +40,6 @@ def placeIntoBuckets(listOfSimpleOminoes):
                 break
             else:
                 numBuckets+=1
-
-    #print(len(buckets))
-    #print(buckets)
-
-    #for i in buckets:
-        #showTilesVisually(i[0].tile)
-        '''for node in orientation:
-            print("up",node.up)
-            print("down",node.down)
-            print("left", node.left)
-            print("right", node.right)
-            print("\n")'''
-
 
 def twoTilesSame(tile1, tile2):
     orientation1 = tile1.orientations[0]
@@ -140,13 +114,6 @@ def buildSimpleOminoes(listOfRawTiles):
         for i, val in enumerate(listOfSimpleNodes):
             listOfSimpleNodes = addNode(i, listOfSimpleNodes)
         list1 = listOfSimpleNodes
-        '''list2 = copy.deepcopy(listOfSimpleNodes)
-        list3 = copy.deepcopy(listOfSimpleNodes)
-        list4 = copy.deepcopy(listOfSimpleNodes)
-        list5 = copy.deepcopy(listOfSimpleNodes)
-        list6 = copy.deepcopy(listOfSimpleNodes)
-        list7 = copy.deepcopy(listOfSimpleNodes)
-        list8 = copy.deepcopy(listOfSimpleNodes)'''
         list2 = rotateClockwise(copy.deepcopy(list1))
         list3 = rotateClockwise(copy.deepcopy(list2))
         list4 = rotateClockwise(copy.deepcopy(list3))
@@ -157,12 +124,6 @@ def buildSimpleOminoes(listOfRawTiles):
         listOfOrientations = [list1,list2,list3,list4,list5,list6,list7,list8]
         curOminoe = simpleOminoe(listOfOrientations, tile)
         masterListOfOminoes.append(curOminoe)
-        '''for i,orientation in enumerate(listOfOrientations):
-            print(i)
-            print("up",orientation[0].up)
-            print("down",orientation[0].down)
-            print("left",orientation[0].left)
-            print("right",orientation[0].right)'''
     return masterListOfOminoes
 
 def flipOminoeOverX(ominoe):
@@ -204,3 +165,17 @@ def makeListOfSimpleNodes(rawTile):
         newNode = simpleNode(i)
         newTile.append(newNode)
     return newTile
+
+'''def hashTheOminoes(listOfSimpleOminoes):
+    for simpleO in listOfSimpleOminoes:
+        if buckets.get(simpleO.hash) == None:
+            buckets[simpleO.hash] = [simpleO]
+        else:
+            buckets.get(simpleO.hash).append(simpleO)
+    keys = buckets.keys()
+    summation = 0
+    for key in keys:
+        print(key + " " + str(len(buckets.get(key))))
+        summation+=len(buckets.get(key))
+    print(summation)
+    #print(buckets.keys())'''
