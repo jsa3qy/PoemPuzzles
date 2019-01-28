@@ -30,7 +30,6 @@ def placeIntoBuckets(listOfSimpleOminoes):
         while (not added):
             if (numBuckets == len(buckets)):
                 buckets.append([ominoe])
-                print(len(buckets))
                 added = True
                 numBuckets = 0
             elif (numBuckets < len(buckets)) and twoTilesSame(ominoe,buckets[numBuckets][0]):

@@ -10,12 +10,14 @@ from buckets import *
 import sys
 from string import ascii_uppercase
 
+#12 pentominoes and 5 tetrominoes
 #12 types of pentominoes, 30 types of hexominoes, 76 types of septominoes
-
-OMINOE_SIZE = 7
+#^^ wrong, there are 35 hexominoes 
+OMINOE_SIZE = 5
 POEM_SIZE = 60
 
 def main():
+    bucketsHashMap = {}
     if POEM_SIZE%OMINOE_SIZE != 0:
         print("NOT A POSSIBLE TILING")
         sys.exit(1)
@@ -61,6 +63,15 @@ def main():
                 print("not possible")
                 sys.exit(1)
             chosenBuckets = random.sample(range(0, len(buckets)), numPadding)
+            chosenBuckets.sort()
+            tempString = ""
+            for i in chosenBuckets:
+                tempString+=str(i)
+            if bucketsHashMap.get(tempString) != None:
+                continue
+            else:
+                bucketsHashMap[tempString] = 1
+
             #print("chosen buckets:",chosenBuckets)
             #print("number of buckets:", len(buckets))
             bucketAddition = POEM_SIZE
