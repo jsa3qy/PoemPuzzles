@@ -2,6 +2,7 @@ import copy
 import sys
 from test import *
 from objectDefinitions import *
+from main import POEM_SIZE
 
 listOfTiles = []
 alreadyCounted = {}
@@ -35,7 +36,7 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
     if curOminoe.sylAvailable >= maybeNode.wordSize:
         curOminoe.sylList.append(listOfSylNodes[index])
         curOminoe.removeReachables(index)
-        curOminoe.extendReachables(index)
+        curOminoe.extendReachables(index, POEM_SIZE)
         '''if somethingWrongHere(curOminoe):
             print("main")
             print(curOminoe.reachableIndices)
@@ -50,13 +51,13 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
                 left = True
                 curOminoe.sylList.append(listOfSylNodes[index - node])
                 curOminoe.removeReachables(index-node)
-                curOminoe.extendReachables(index-node)
+                curOminoe.extendReachables(index-node, POEM_SIZE)
         if (maybeNode.sylRight > 0):
             for node in range(1,maybeNode.sylRight+1):
                 right = True
                 curOminoe.sylList.append(listOfSylNodes[index+node])
                 curOminoe.removeReachables(index+node)
-                curOminoe.extendReachables(index+node)
+                curOminoe.extendReachables(index+node, POEM_SIZE)
         curOminoe.sylAvailable -= maybeNode.wordSize
     else:
         curOminoe.removeReachables(index)

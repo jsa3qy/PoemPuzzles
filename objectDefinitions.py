@@ -2,7 +2,7 @@
 import sys
 
 
-POEM_SIZE = 60
+
 
 class sylNode:
     #constructor
@@ -35,7 +35,7 @@ class ominoe:
         return tempList
 
     #extends what is reachable in the ominoe based on what is reachable from this index passed
-    def extendReachables(self, index):
+    def extendReachables(self, index, POEM_SIZE):
         listOfSylsSize = POEM_SIZE
         reachablesFromIndex = listOfReachableIndices(index, listOfSylsSize)
         for index in reachablesFromIndex:

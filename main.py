@@ -12,30 +12,35 @@ from string import ascii_uppercase
 
 #12 pentominoes and 5 tetrominoes
 #12 types of pentominoes, 30 types of hexominoes, 76 types of septominoes
-#^^ wrong, there are 35 hexominoes 
-OMINOE_SIZE = 5
-POEM_SIZE = 60
+#^^ wrong, there are 35 hexominoes
+OMINOE_SIZE = [4, 5]
+POEM_SIZE = 80
 
 def main():
+    OMINOE_SIZE.sort()
     bucketsHashMap = {}
-    if POEM_SIZE%OMINOE_SIZE != 0:
-        print("NOT A POSSIBLE TILING")
-        sys.exit(1)
+    #if POEM_SIZE%OMINOE_SIZE != 0:
+        #print("NOT A POSSIBLE TILING")
+        #sys.exit(1)
     myFile = open("poem.txt")
+    otherFile = open("howILoveThee.txt")
     #otherFile = open("syllablizedPoemOneSyllablePerWord.txt")
-    otherFile = open("syllablizedPoem.txt")
+    #otherFile = open("syllablizedPoem.txt")
     #No punctuation in words!
     listOfWords = readInRawPoem(myFile)
     listOfSyls = readInSyllablePoem(otherFile)
     masterListOfSyllables = makeMasterListOfSyllables(listOfSyls)
+
     listOfSylNodes = makeSylNodes(listOfSyls)
 
-    for i, node in enumerate(listOfSylNodes):
-        #AHHH CAN BE OPTIMIZED WITH TRIES OVER HASHMAP
-        myOminoe = ominoe(OMINOE_SIZE)
-        myOminoe.reachableIndices+= listOfReachableIndices(i, POEM_SIZE)
-        extendOminoe(myOminoe, i, listOfSylNodes)
-        expandInAllDirections(myOminoe, listOfSylNodes)
+    for j in OMINOE_SIZE:
+        for i, node in enumerate(listOfSylNodes):
+            #AHHH CAN BE OPTIMIZED WITH TRIES OVER HASHMAP
+            myOminoe = ominoe(j)
+            myOminoe.reachableIndices+= listOfReachableIndices(i, POEM_SIZE)
+            extendOminoe(myOminoe, i, listOfSylNodes)
+            expandInAllDirections(myOminoe, listOfSylNodes)
+
     print("done expanding...")
     #let's take valid tiles from the ominoe objects and sort them
     sortedListOfTiles = []
@@ -50,7 +55,7 @@ def main():
 
     validCount = 0
     sortedListOfTilesCopy = copy.deepcopy(sortedListOfTiles)
-    for i in range(1):
+    for i in range(100):
         cover = []
         counter = 0
         while (len(cover) == 0):
@@ -58,10 +63,11 @@ def main():
             if counter%10 == 0:
                 print(counter)
             sortedListOfTiles = []
-            numPadding = POEM_SIZE/OMINOE_SIZE
-            if (int(numPadding) != POEM_SIZE/OMINOE_SIZE):
-                print("not possible")
-                sys.exit(1)
+            #numPadding = POEM_SIZE/OMINOE_SIZE
+            numPadding = len(buckets)
+            #if (int(numPadding) != POEM_SIZE/OMINOE_SIZE):
+                #print("not possible")
+                #sys.exit(1)
             chosenBuckets = random.sample(range(0, len(buckets)), numPadding)
             chosenBuckets.sort()
             tempString = ""
@@ -117,6 +123,7 @@ def main():
             validCount+=1
             for i in finalList:
                 print(i)
+                showTilesVisually(i, POEM_SIZE)
             print('\n')
         else:
             print("invalid tiling")
@@ -135,7 +142,7 @@ def main():
                 boardTile[index] = ascii_uppercase[letterIndex]
         letterIndex+=1
 
-    boardTile = np.reshape(boardTile,(6,10))
+    boardTile = np.reshape(boardTile,(POEM_SIZE/10,10))
     print(boardTile)
 
 

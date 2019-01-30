@@ -3,6 +3,7 @@ from objectDefinitions import *
 from operator import itemgetter
 import math
 import numpy as np
+
 buckets = []
 
 class simpleOminoe:
@@ -40,27 +41,25 @@ def placeIntoBuckets(listOfSimpleOminoes):
             else:
                 numBuckets+=1
 
+
 def twoTilesSame(tile1, tile2):
     orientation1 = tile1.orientations[0]
     for orientation2 in tile2.orientations:
         orientation2Copy = copy.deepcopy(orientation2)
         if sameOrientation(orientation1, orientation2Copy):
-            #print("same tile shapes!")
-            #showTilesVisually(tile1.tile)
-            #showTilesVisually(tile2.tile)
-            #sys.exit(0)
             return True
     return False
 
-def showTilesVisually(tile):
-    boardTile = np.empty(60,  dtype='|S6')
+def showTilesVisually(tile, POEM_SIZE):
+    boardTile = np.empty(POEM_SIZE,  dtype='|S6')
     boardTile.flatten()
-    for j in range(60):
+    for j in range(POEM_SIZE):
         boardTile[j] = "."
     for index in tile:
-        boardTile[index] = "X"#masterListOfSyllables[index]
-
-    boardTile = np.reshape(boardTile,(6,10))
+        if index < POEM_SIZE:
+            boardTile[index] = "X"#masterListOfSyllables[index]
+    
+    boardTile = np.reshape(boardTile,(POEM_SIZE/10,10))
     print("\n")
     print("Tile: " + str(tile))
     print(boardTile)
@@ -87,13 +86,13 @@ def nodeIsPresent(node, orientation):
     rightValid = False
     leftValid = False
     for node2 in orientation:
-        if (node.up == None and node2.up == None) or (node.up != None and node2.up != None) and node2.seen != True:
+        if ((node.up == None and node2.up == None) or (node.up != None and node2.up != None)) and (node2.seen != True):
             upValid = True
-        if (node.down == None and node2.down == None) or (node.down != None and node2.down != None)and node2.seen != True:
+        if ((node.down == None and node2.down == None) or (node.down != None and node2.down != None)) and (node2.seen != True):
             downValid = True
-        if (node.left == None and node2.left == None) or (node.left != None and node2.left != None)and node2.seen != True:
+        if ((node.left == None and node2.left == None) or (node.left != None and node2.left != None))and (node2.seen != True):
             leftValid = True
-        if (node.right == None and node2.right == None) or (node.right != None and node2.right != None)and node2.seen != True:
+        if ((node.right == None and node2.right == None) or (node.right != None and node2.right != None)) and (node2.seen != True):
             rightValid = True
         if (upValid and downValid and leftValid and rightValid):
             return True, orientation.index(node2)
