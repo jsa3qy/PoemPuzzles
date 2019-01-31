@@ -63,7 +63,7 @@ def main():
     print("building simple ominoes")
     builtListOfSimpleOminoes = buildSimpleOminoes(sortedListOfTiles)
     print("built simple ominoes")
-    print(len(sortedListOfTiles))
+    print("Number of tiles: " + str(len(sortedListOfTiles)))
     placeIntoBuckets(builtListOfSimpleOminoes)
     print("number of different ominoes:",len(buckets))
 
@@ -161,11 +161,11 @@ def main():
                 letterIndex+=1
 
             boardTile = np.reshape(boardTile,(POEM_SIZE/10,10))
-
+            print(str(qqq) + ": ")
             print(boardTile)
         else:
             notUniqueCount +=1
-    print("number of non-uniques hit",notUniqueCount)
+    print("number of non-uniques hit: " + str(notUniqueCount))
 
 
 
