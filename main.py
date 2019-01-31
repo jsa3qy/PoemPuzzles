@@ -165,7 +165,8 @@ def main():
             print(boardTile)
         else:
             notUniqueCount +=1
-    print("number of non-uniques hit: " + str(notUniqueCount))
+            qqq-=1
+    print("number of non-uniques hit (not displayed above, all of the above ARE unique): " + str(notUniqueCount))
 
 
 
