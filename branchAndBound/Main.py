@@ -11,13 +11,15 @@ from networkx.algorithms.approximation import clique_removal
 from igraph import Graph
 from igraph import *
 from validity import *
+import random
 
-POEM_SIZE = 80
+POEM_SIZE = 60
 
 successCount = 0
 
 def main():
-    file = open("pieces.txt")
+    #file = open("pieces.txt")
+    file = open("piecesHex.txt")
     listOfLists = []
     for line in file:
         line = line.split(" , ")
@@ -37,8 +39,14 @@ def main():
     for sublist_orientations in listOfLists:
         tileObjects = []
         for orientation in sublist_orientations:
-            tileObjects.append(tileObject(orientation))
+            goodToGo = True
+            for i in orientation:
+                if i >= POEM_SIZE:
+                    goodToGo = False
+            if goodToGo:
+                tileObjects.append(tileObject(orientation))
         tileObjectsInBuckets.append(copy.deepcopy(tileObjects))
+
 
     for index,bucket in enumerate(tileObjectsInBuckets):
         newBucket = copy.deepcopy(bucket)
@@ -52,11 +60,9 @@ def main():
     tileDescriptors = []
     for index,bucket in enumerate(tileObjectsInBuckets):
         for index2,thing in enumerate(bucket):
-            if index2%2 == 0:
-                continue
             tileDescriptors.append(tileDescriptor(thing.currentPosition, index, POEM_SIZE))
-
-    otherFile = open("howILoveThee.txt")
+    #otherFile = open("howILoveThee.txt")
+    otherFile = open("20SylPoem.txt")
     listOfSyls = readInSyllablePoem(otherFile)
     masterListOfSyllables = makeMasterListOfSyllables(listOfSyls)
     listOfSylNodes = makeSylNodes(listOfSyls)
@@ -73,14 +79,17 @@ def main():
                 #node.toString(1)
                 #node.toStringWord(listOfSylNodes)
         else:
-
             continue
-    print(before)
-    print(len(validListOfTileDescriptors))
+
+    print("Tiles before pruning: ",before)
+    print("number of tiles: ",len(validListOfTileDescriptors))
     #for i in listOfSylNodes:
         #print(i.syl + " " + str(i.absolutePos))
 
-
+    random.shuffle(validListOfTileDescriptors)
+    validListOfTileDescriptors = validListOfTileDescriptors[0:len(validListOfTileDescriptors)/5]
+    print("Tiles before pruning: ",before)
+    print("number of tiles: ",len(validListOfTileDescriptors))
     #G=nx.Graph()
     G = Graph()
     G.add_vertices(len(validListOfTileDescriptors))
@@ -88,28 +97,41 @@ def main():
     listOfEdgesToAdd = []
     for index1, node1 in enumerate(validListOfTileDescriptors):
         for index2, node2 in enumerate(validListOfTileDescriptors):
-            if ((index2>index1) and (overlap(node1, node2) or node1.bucketNum == node2.bucketNum)):
+            if ((index2>index1) and (overlap(node1, node2))):# or node1.bucketNum == node2.bucketNum)):
                 listOfEdgesToAdd.append((index1,index2))
 
+    #for i in listOfEdgesToAdd:
+        #print(validListOfTileDescriptors[i[0]].rawTile)
+        #print(validListOfTileDescriptors[i[0]].bucketNum)
+        #print(validListOfTileDescriptors[i[1]].rawTile)
+        #print(validListOfTileDescriptors[i[1]].bucketNum)
+        #print('')
 
-    print(len(listOfEdgesToAdd))
+
+    print("edges count: ", len(listOfEdgesToAdd))
     G.add_edges(listOfEdgesToAdd)
     #print(G)
     print("made it")
-    solution = G.largest_independent_vertex_sets()
+    #solution = G.largest_independent_vertex_sets()
+    solution = G.independence_number()
+
     print(solution)
+    sys.exit(0)
 
     boardTile = np.empty(POEM_SIZE,  dtype='|S6')
     boardTile.flatten()
     for index, val in enumerate(boardTile):
         boardTile[index] = '3'
     letterIndex = 0
-
-    for indexT, tileNum in enumerate(solution):
-        print(tileNum)
+    for i in solution:
+        print(len(i))
+    solution1 = solution[len(solution)-1]
+    print(solution1)
+    for indexT, tileNum in enumerate(solution1):
+        #print(tileNum)
         #print(tileDescriptors[tileNum])
-        sys.exit(0)
-        tile = tileDescriptors[tileNum]
+
+        tile = validListOfTileDescriptors[tileNum]
         tile.toString(1)
         for index in tile.rawTile:
             if index < POEM_SIZE:

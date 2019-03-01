@@ -11,11 +11,12 @@ import sys
 from string import ascii_uppercase
 from uniqueness import uniqueCover
 
+
 #12 pentominoes and 5 tetrominoes
 #12 types of pentominoes, 30 types of hexominoes, 76 types of septominoes
 #^^ wrong, there are 35 hexominoes
 OMINOE_SIZE = [4, 5]
-POEM_SIZE = 80
+POEM_SIZE = 60
 TILINGS_TO_PRINT = 10
 
 
@@ -37,8 +38,8 @@ def main():
         #print("NOT A POSSIBLE TILING")
         #sys.exit(1)
     myFile = open("poem.txt")
-    otherFile = open("howILoveThee.txt")
-    #otherFile = open("syllablizedPoemOneSyllablePerWord.txt")
+    #otherFile = open("howILoveThee.txt")
+    otherFile = open("syllablizedPoemOneSyllablePerWord.txt")
     #otherFile = open("syllablizedPoem.txt")
     #No punctuation in words!
     listOfWords = readInRawPoem(myFile)

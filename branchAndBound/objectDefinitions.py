@@ -7,10 +7,11 @@ class tileObject:
         self.currentPosition = tile
 
 class tileDescriptor:
-    def __init__(self, tile, bucketNum, POEM_SIZE = 80):
+    def __init__(self, tile, bucketNum, POEM_SIZE = 60):
         self.rawTile = tile
         self.binaryTile = [0]*POEM_SIZE
         for i in tile:
+
             self.binaryTile[i] = 1
         self.bucketNum = bucketNum
     def toString(self, specifier):
