@@ -62,7 +62,7 @@ def main():
         for index2,thing in enumerate(bucket):
             tileDescriptors.append(tileDescriptor(thing.currentPosition, index, POEM_SIZE))
     #otherFile = open("howILoveThee.txt")
-    otherFile = open("20SylPoem.txt")
+    otherFile = open("60SylPoem.txt")
     listOfSyls = readInSyllablePoem(otherFile)
     masterListOfSyllables = makeMasterListOfSyllables(listOfSyls)
     listOfSylNodes = makeSylNodes(listOfSyls)
@@ -87,7 +87,7 @@ def main():
         #print(i.syl + " " + str(i.absolutePos))
 
     random.shuffle(validListOfTileDescriptors)
-    validListOfTileDescriptors = validListOfTileDescriptors[0:len(validListOfTileDescriptors)/5]
+    validListOfTileDescriptors = validListOfTileDescriptors[0:len(validListOfTileDescriptors)]
     print("Tiles before pruning: ",before)
     print("number of tiles: ",len(validListOfTileDescriptors))
     #G=nx.Graph()
@@ -97,7 +97,7 @@ def main():
     listOfEdgesToAdd = []
     for index1, node1 in enumerate(validListOfTileDescriptors):
         for index2, node2 in enumerate(validListOfTileDescriptors):
-            if ((index2>index1) and (overlap(node1, node2))):# or node1.bucketNum == node2.bucketNum)):
+            if ((index2>index1) and (overlap(node1, node2) or node1.bucketNum == node2.bucketNum)):
                 listOfEdgesToAdd.append((index1,index2))
 
     #for i in listOfEdgesToAdd:
@@ -112,27 +112,25 @@ def main():
     G.add_edges(listOfEdgesToAdd)
     #print(G)
     print("made it")
-    #solution = G.largest_independent_vertex_sets()
-    solution = G.independence_number()
-
+    solution = G.largest_independent_vertex_sets()
+    #solution = G.independence_number()
+    print("list of solutions: ")
     print(solution)
-    sys.exit(0)
+    
 
     boardTile = np.empty(POEM_SIZE,  dtype='|S6')
     boardTile.flatten()
     for index, val in enumerate(boardTile):
         boardTile[index] = '3'
     letterIndex = 0
-    for i in solution:
-        print(len(i))
     solution1 = solution[len(solution)-1]
-    print(solution1)
+    #print(solution1)
     for indexT, tileNum in enumerate(solution1):
         #print(tileNum)
         #print(tileDescriptors[tileNum])
 
         tile = validListOfTileDescriptors[tileNum]
-        tile.toString(1)
+        #tile.toString(1)
         for index in tile.rawTile:
             if index < POEM_SIZE:
                 boardTile[index] = ascii_uppercase[letterIndex]
