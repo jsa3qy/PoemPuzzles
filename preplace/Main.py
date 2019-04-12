@@ -17,7 +17,7 @@ POEM_SIZE = 60
 successCount = 0
 
 def main():
-    #file = open("pieces.txt")
+    #file = open("syllablizedPoemOneSyllablePerWord.txt")
     file = open("piecesHex.txt")
     listOfLists = []
     for line in file:
@@ -46,7 +46,6 @@ def main():
                 tileObjects.append(tileObject(orientation))
         tileObjectsInBuckets.append(copy.deepcopy(tileObjects))
 
-
     for index,bucket in enumerate(tileObjectsInBuckets):
         newBucket = copy.deepcopy(bucket)
         for tile in newBucket:
@@ -69,6 +68,7 @@ def main():
 
     #otherFile = open("howILoveThee.txt")
     otherFile = open("60SylPoem.txt")
+    #otherFile = open("syllablizedPoemOneSyllablePerWord.txt")
     listOfSyls = readInSyllablePoem(otherFile)
     masterListOfSyllables = makeMasterListOfSyllables(listOfSyls)
     listOfSylNodes = makeSylNodes(listOfSyls)
@@ -96,98 +96,96 @@ def main():
 
 #OK let's place three tiles
     validListOfTileDescriptorsInBuckets.sort(key=len)
-    #validListOfTileDescriptorsInBuckets.reverse()
+    returnList = copy.deepcopy(validListOfTileDescriptorsInBuckets)
 
-    print('')
-    for i in validListOfTileDescriptorsInBuckets:
-        print(len(i))
+    length1 = len(validListOfTileDescriptorsInBuckets[0])
+    length2 = len(validListOfTileDescriptorsInBuckets[1])
+    length3 = len(validListOfTileDescriptorsInBuckets[2])
+    solutionLength = 0
+    tileSaved1 = None
+    tileSaved2 = None
+    tileSaved3 = None
+    done = False
+    iterationCount = 0
+    for i1 in range(length1):
+        for j1 in range(length2):
+            for k1 in range(length3):
+                if (iterationCount) > (length1*length2*length3/2):
+                    iterationCount+=1
+                    continue
+                iterationCount+=1
+                if solutionLength == 9:
+                    done = True
+                    break
+                validListOfTileDescriptorsInBuckets = copy.deepcopy(returnList)
+                tileSaved1 = copy.deepcopy(validListOfTileDescriptorsInBuckets[0][i1])
+                tileSaved2 = copy.deepcopy(validListOfTileDescriptorsInBuckets[1][j1])
+                tileSaved3 = copy.deepcopy(validListOfTileDescriptorsInBuckets[2][k1])
+                if overlap(tileSaved1,tileSaved2) or overlap(tileSaved3,tileSaved1) or overlap(tileSaved3,tileSaved2):
+                    continue
+                del validListOfTileDescriptorsInBuckets[2]
+                del validListOfTileDescriptorsInBuckets[1]
+                del validListOfTileDescriptorsInBuckets[0]
+                overlappedTiles = []
+                for index,bucket in enumerate(validListOfTileDescriptorsInBuckets):
+                    for i in bucket:
+                        if overlap(i, tileSaved1):
+                            overlappedTiles.append([index,i])
+                        if overlap(i,tileSaved2):
+                            overlappedTiles.append([index,i])
+                        if overlap(i,tileSaved3):
+                            overlappedTiles.append([index,i])
+                for i in overlappedTiles:
+                    try:
+                        validListOfTileDescriptorsInBuckets[i[0]].remove(i[1])
+                    except:
+                        pass
+                validListOfTileDescriptors = []
+                for i in validListOfTileDescriptorsInBuckets:
+                    validListOfTileDescriptors+=i
+
+                print("iteration " + str(iterationCount) + " of " + str(length1*length2*length3))
+                #random.shuffle(validListOfTileDescriptors)
+                #validListOfTileDescriptors = validListOfTileDescriptors[0:len(validListOfTileDescriptors)]
+                G = Graph()
+                G.add_vertices(len(validListOfTileDescriptors))
+                listOfEdgesToAdd = []
+                for index1, node1 in enumerate(validListOfTileDescriptors):
+                    for index2, node2 in enumerate(validListOfTileDescriptors):
+                        if ((index2>index1) and not (overlap(node1, node2) or node1.bucketNum == node2.bucketNum)):
+                            listOfEdgesToAdd.append((index1,index2))
+                print("edges count: ", len(listOfEdgesToAdd))
+
+                G.add_edges(listOfEdgesToAdd)
+                print("made it")
+                #solution = G.largest_cliques()
+                solution = G.clique_number()
+                print(solution)
+                #solution = G.largest_independent_vertex_sets()
+                #solution = G.independence_number()
+                try:
+                    solutionLength = solution
+                    #solutionLength = len(solution[0])
+                except:
+                    print("solution pool length is " + str(len(solution)))
+
+            if done:
+                break
+
+
+    print("we good boi")
     sys.exit(0)
-    random.shuffle(validListOfTileDescriptorsInBuckets[0])
-    tileSaved1 = copy.deepcopy(validListOfTileDescriptorsInBuckets[0][0])
-    del validListOfTileDescriptorsInBuckets[0]
-    overlappedTiles = []
-    for index,bucket in enumerate(validListOfTileDescriptorsInBuckets):
-        for i in bucket:
-            if overlap(i, tileSaved1):
-                overlappedTiles.append([index,i])
-    for i in overlappedTiles:
-        validListOfTileDescriptorsInBuckets[i[0]].remove(i[1])
-    random.shuffle(validListOfTileDescriptorsInBuckets[1])
-    tileSaved2 = copy.deepcopy(validListOfTileDescriptorsInBuckets[1][0])
-    del validListOfTileDescriptorsInBuckets[1]
-    overlappedTiles = []
-    for index,bucket in enumerate(validListOfTileDescriptorsInBuckets):
-        for i in bucket:
-            if overlap(i, tileSaved2):
-                overlappedTiles.append([index,i])
-    for i in overlappedTiles:
-        validListOfTileDescriptorsInBuckets[i[0]].remove(i[1])
-    random.shuffle(validListOfTileDescriptorsInBuckets[2])
-    tileSaved3 = copy.deepcopy(validListOfTileDescriptorsInBuckets[2][0])
-    del validListOfTileDescriptorsInBuckets[2]
-    # overlappedTiles = []
-    # for index,bucket in enumerate(validListOfTileDescriptorsInBuckets):
-    #     for i in bucket:
-    #         if overlap(i, tileSaved3):
-    #             overlappedTiles.append([index,i])
-    # for i in overlappedTiles:
-    #     validListOfTileDescriptorsInBuckets[i[0]].remove(i[1])
-    # print('')
-    # for i in validListOfTileDescriptorsInBuckets:
-    #     print(len(i))
-
-    validListOfTileDescriptors = []
-    for i in validListOfTileDescriptorsInBuckets:
-        validListOfTileDescriptors+=i
-
-
-    #AHHHHH
-    print("Tiles before pruning: ",before)
-    print("number of tiles: ",len(validListOfTileDescriptors))
-    random.shuffle(validListOfTileDescriptors)
-    validListOfTileDescriptors = validListOfTileDescriptors[0:len(validListOfTileDescriptors)]
-    print("Tiles before pruning: ",before)
-    print("number of tiles: ",len(validListOfTileDescriptors))
-    #G=nx.Graph()
-    G = Graph()
-    G.add_vertices(len(validListOfTileDescriptors))
-
-    listOfEdgesToAdd = []
-    for index1, node1 in enumerate(validListOfTileDescriptors):
-        for index2, node2 in enumerate(validListOfTileDescriptors):
-            if ((index2>index1) and not (overlap(node1, node2) or node1.bucketNum == node2.bucketNum)):
-                listOfEdgesToAdd.append((index1,index2))
-
-    #for i in listOfEdgesToAdd:
-        #print(validListOfTileDescriptors[i[0]].rawTile)
-        #print(validListOfTileDescriptors[i[0]].bucketNum)
-        #print(validListOfTileDescriptors[i[1]].rawTile)
-        #print(validListOfTileDescriptors[i[1]].bucketNum)
-        #print('')
-
-
-    print("edges count: ", len(listOfEdgesToAdd))
-    G.add_edges(listOfEdgesToAdd)
-    print("made it")
-    solution = G.largest_cliques()
-    #solution = G.clique_number()
-    #solution = G.largest_independent_vertex_sets()
-    #solution = G.independence_number()
-    print("list of solutions: ")
-    print(solution)
-
-
-
     boardTile = np.empty(POEM_SIZE,  dtype='|S6')
     boardTile.flatten()
     for index, val in enumerate(boardTile):
         boardTile[index] = '3'
     letterIndex = 0
-    if len(solution) == 0:
+    try:
+        solution1 = solution[0]
+    except:
         print("no solution")
         sys.exit(0)
-    solution1 = solution[0]
-    #print(solution1)
+
     for indexT, tileNum in enumerate(solution1):
         tile = validListOfTileDescriptors[tileNum]
         #tile.toString(1)
@@ -203,10 +201,11 @@ def main():
         if index < POEM_SIZE:
             boardTile[index] = ascii_uppercase[letterIndex]
     letterIndex+=1
-    # for index in tileSaved3.rawTile:
-    #     if index < POEM_SIZE:
-    #         boardTile[index] = ascii_uppercase[letterIndex]
-    # letterIndex+=1
+    for index in tileSaved3.rawTile:
+        if index < POEM_SIZE:
+            boardTile[index] = ascii_uppercase[letterIndex]
+    letterIndex+=1
+
 
     boardTile = np.reshape(boardTile,(POEM_SIZE/10,10))
     print(boardTile)

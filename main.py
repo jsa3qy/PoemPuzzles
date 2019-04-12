@@ -13,114 +13,93 @@ from uniqueness import uniqueCover
 
 
 #12 pentominoes and 5 tetrominoes
-#12 types of pentominoes, 30 types of hexominoes, 76 types of septominoes
-#^^ wrong, there are 35 hexominoes
-OMINOE_SIZE = [4, 5]
+#default is empty, will be appended to after user input
+OMINOE_SIZE = []
+#boolean values, 0s == no uniqueness, 1s == uniqueness
+OMINOE_BOOLS = []
+#default is 60, will be reassigned with user input
 POEM_SIZE = 60
-TILINGS_TO_PRINT = 10
-
+#iterations default is 1
+iterations = 1
 
 def main():
 
-    user_specify = raw_input("Would you like to specify the number of tilings? default is 1 (n/Y): ")
-    if user_specify == "Y":
-        TILINGS_TO_PRINT = raw_input("How many iterations: ")
-        TILINGS_TO_PRINT = int(TILINGS_TO_PRINT)
-    elif user_specify == "n":
-        print("Running 1 time...")
-    else:
-        print("invalid response, run program again.")
+    #OMINOE_SIZE2 == OMINOE_SIZE1 if you only want one type
+    #format of inputFile is:
+    #iterations poem_size number_of_ominoe_sizes ominoe_size_0 ... ominoe_size_n add_padding_boolean_0 ... add_padding_boolean_n
+    user_specify = open('inputFile.txt')
+    user_specify = user_specify.readline().strip()
+    user_specify = user_specify.split(" ")
+
+    try:
+        TILINGS_TO_PRINT = int(user_specify[0])
+        POEM_SIZE = int(user_specify[1])
+        for i in range(int(user_specify[2])):
+            OMINOE_SIZE.append(int(user_specify[3+i]))
+            OMINOE_BOOLS.append(int(user_specify[3+int(user_specify[2])+i]))
+    except:
+        print("ERROR")
         sys.exit(1)
 
-    OMINOE_SIZE.sort()
     bucketsHashMap = {}
-    #if POEM_SIZE%OMINOE_SIZE != 0:
-        #print("NOT A POSSIBLE TILING")
-        #sys.exit(1)
     myFile = open("poem.txt")
     #otherFile = open("howILoveThee.txt")
     otherFile = open("syllablizedPoemOneSyllablePerWord.txt")
     #otherFile = open("syllablizedPoem.txt")
+
     #No punctuation in words!
     listOfWords = readInRawPoem(myFile)
     listOfSyls = readInSyllablePoem(otherFile)
     masterListOfSyllables = makeMasterListOfSyllables(listOfSyls)
-
     listOfSylNodes = makeSylNodes(listOfSyls)
 
-    for j in OMINOE_SIZE:
+    for index, j in enumerate(OMINOE_SIZE):
         for i, node in enumerate(listOfSylNodes):
-            #AHHH CAN BE OPTIMIZED WITH TRIES OVER HASHMAP
             myOminoe = ominoe(j)
             myOminoe.reachableIndices+= listOfReachableIndices(i, POEM_SIZE)
             extendOminoe(myOminoe, i, listOfSylNodes)
             expandInAllDirections(myOminoe, listOfSylNodes)
 
-    print("done expanding...")
     #let's take valid tiles from the ominoe objects and sort them
     sortedListOfTiles = []
     for validTile in listOfTiles:
         sortedListOfTiles.append(validTile.getIndicesInOminoe())
-    print("building simple ominoes")
     builtListOfSimpleOminoes = buildSimpleOminoes(sortedListOfTiles)
-    print("built simple ominoes")
-    print("Number of tiles: " + str(len(sortedListOfTiles)))
+    print("Number of tiles constructed: " + str(len(sortedListOfTiles)))
     placeIntoBuckets(builtListOfSimpleOminoes)
-    print("number of different ominoes:",len(buckets))
+    print("number of different ominoe shapes:",len(buckets))
 
     validCount = 0
     sortedListOfTilesCopy = copy.deepcopy(sortedListOfTiles)
     notUniqueCount = 0
+
     for qqq in range(TILINGS_TO_PRINT):
         cover = []
-        #counter = 0
-        #if (qqq < TILINGS_TO_PRINT):
-            #counter+=1
-            #if counter%10 == 0:
-                #print(counter)
-
-        #numPadding = POEM_SIZE/OMINOE_SIZE
         numPadding = len(buckets)
-        #if (int(numPadding) != POEM_SIZE/OMINOE_SIZE):
-            #print("not possible")
-            #sys.exit(1)
         if qqq == 0:
             sortedListOfTiles = []
-            chosenBuckets = random.sample(range(0, len(buckets)), numPadding)
-            chosenBuckets.sort()
-            tempString = ""
-            for i in chosenBuckets:
-                tempString+=str(i)
-            if bucketsHashMap.get(tempString) != None:
-                continue
-            else:
-                bucketsHashMap[tempString] = 1
-
-        #print("chosen buckets:",chosenBuckets)
-        #print("number of buckets:", len(buckets))
             bucketAddition = POEM_SIZE
             for i,bucket in enumerate(buckets):
-                if (i in chosenBuckets):
-                    for ominoeObject in bucket:
-                        tempTile = ominoeObject.tile
-                        tempTile.append(bucketAddition)
-                        sortedListOfTiles.append(tempTile)
-                    bucketAddition +=1
-            rangeIncrease = numPadding
-        #print(sortedListOfTiles)
-        #sortedListOfTiles.sort(key=lambda x: x[0])
+                if len(buckets[i][0].tile) in OMINOE_SIZE:
+                    if OMINOE_BOOLS[OMINOE_SIZE.index(len(buckets[i][0].tile))] == 1:
+                        for ominoeObject in bucket:
+                            tempTile = ominoeObject.tile
+                            tempTile.append(bucketAddition)
+                            sortedListOfTiles.append(tempTile)
+                        bucketAddition +=1
+                    else:
+                        for ominoeObject in bucket:
+                            sortedListOfTiles.append(ominoeObject.tile)
+            rangeIncrease = bucketAddition-POEM_SIZE
+
         random.shuffle(sortedListOfTiles)
         true = 0
-            #print("Done with tile enumeration, finding a valid tiling!")
-            #print("num tiles: " + str(len(sortedListOfTiles)))
-            #exact cover time
         listOfUsableInputs = []
         for tile in sortedListOfTiles:
             referenceTile = np.zeros(POEM_SIZE+rangeIncrease)
             for index in tile:
                 referenceTile[index] += 1
             listOfUsableInputs.append(referenceTile)
-
 
         S = np.array(listOfUsableInputs, dtype='int32')
         cover = ec.get_exact_cover(S)

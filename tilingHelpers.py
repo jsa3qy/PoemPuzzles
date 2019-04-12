@@ -1,7 +1,7 @@
 import copy
 import sys
 from test import *
-from objectDefinitions2 import *
+from objectDefinitions import *
 from main import POEM_SIZE
 
 listOfTiles = []
