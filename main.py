@@ -23,7 +23,6 @@ POEM_SIZE = 60
 iterations = 1
 
 def main():
-
     #OMINOE_SIZE2 == OMINOE_SIZE1 if you only want one type
     #format of inputFile is:
     #iterations poem_size number_of_ominoe_sizes ominoe_size_0 ... ominoe_size_n add_padding_boolean_0 ... add_padding_boolean_n
@@ -41,10 +40,15 @@ def main():
         print("ERROR")
         sys.exit(1)
 
+    #error checking
+    if 6 in OMINOE_SIZE and OMINOE_BOOLS[OMINOE_SIZE.index(6)] == 1:
+        print("ERROR")
+        sys.exit(1)
+
     bucketsHashMap = {}
     myFile = open("poem.txt")
-    #otherFile = open("howILoveThee.txt")
-    otherFile = open("syllablizedPoemOneSyllablePerWord.txt")
+    otherFile = open("howILoveThee.txt")
+    #otherFile = open("syllablizedPoemOneSyllablePerWord.txt")
     #otherFile = open("syllablizedPoem.txt")
 
     #No punctuation in words!
@@ -65,6 +69,10 @@ def main():
     for validTile in listOfTiles:
         sortedListOfTiles.append(validTile.getIndicesInOminoe())
     builtListOfSimpleOminoes = buildSimpleOminoes(sortedListOfTiles)
+    placeIntoBuckets(builtListOfSimpleOminoes)
+
+
+
     print("Number of tiles constructed: " + str(len(sortedListOfTiles)))
     placeIntoBuckets(builtListOfSimpleOminoes)
     print("number of different ominoe shapes:",len(buckets))
@@ -100,10 +108,10 @@ def main():
             for index in tile:
                 referenceTile[index] += 1
             listOfUsableInputs.append(referenceTile)
-
+####################################################################
         S = np.array(listOfUsableInputs, dtype='int32')
         cover = ec.get_exact_cover(S)
-#####
+####################################################################
         finalList = []
         for i in cover:
             finalList.append(sortedListOfTiles[i])
@@ -119,10 +127,6 @@ def main():
                     valid = False
             if valid or not valid:
                 validCount+=1
-                #for i in finalList:
-                    #print(i)
-                    #showTilesVisually(i, POEM_SIZE)
-                #print('\n')
             else:
                 print("invalid tiling")
                 #sys.exit(1)
@@ -141,17 +145,12 @@ def main():
                 letterIndex+=1
 
             boardTile = np.reshape(boardTile,(POEM_SIZE/10,10))
-            print(str(qqq) + ": ")
+            print("iteration " + str(qqq) + ": ")
             print(boardTile)
         else:
             notUniqueCount +=1
             qqq-=1
     print("number of non-uniques hit (not displayed above, all of the above ARE unique): " + str(notUniqueCount))
-
-
-
-
-
 
 if __name__ == "__main__":
     main()

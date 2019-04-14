@@ -58,7 +58,7 @@ def showTilesVisually(tile, POEM_SIZE):
     for index in tile:
         if index < POEM_SIZE:
             boardTile[index] = "X"#masterListOfSyllables[index]
-    
+
     boardTile = np.reshape(boardTile,(POEM_SIZE/10,10))
     print("\n")
     print("Tile: " + str(tile))
@@ -163,17 +163,3 @@ def makeListOfSimpleNodes(rawTile):
         newNode = simpleNode(i)
         newTile.append(newNode)
     return newTile
-
-'''def hashTheOminoes(listOfSimpleOminoes):
-    for simpleO in listOfSimpleOminoes:
-        if buckets.get(simpleO.hash) == None:
-            buckets[simpleO.hash] = [simpleO]
-        else:
-            buckets.get(simpleO.hash).append(simpleO)
-    keys = buckets.keys()
-    summation = 0
-    for key in keys:
-        print(key + " " + str(len(buckets.get(key))))
-        summation+=len(buckets.get(key))
-    print(summation)
-    #print(buckets.keys())'''
