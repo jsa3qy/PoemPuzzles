@@ -1,9 +1,6 @@
 
 import sys
 
-
-
-
 class sylNode:
     #constructor
     def __init__(self, listOfSyls, index, tag, absolutePos):

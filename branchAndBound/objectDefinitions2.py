@@ -1,8 +1,4 @@
-
 import sys
-
-
-
 
 class sylNode:
     #constructor
