@@ -5,12 +5,13 @@ import math
 import numpy as np
 
 buckets = []
-
+#orientations field stores a vector of graphs. The graphs are made up of simpleNodes, which point to each other. Each simpleNode represents a syllable, and the graph in its entirety represents valid ominoe piece in some orientation.
 class simpleOminoe:
     def __init__(self, orientations, rawTile):
         self.orientations = orientations
         self.tile = rawTile
 
+#A simpleNode is a node in a graph that represents a valid ominoe of the poem
 class simpleNode:
     def __init__(self, val):
         self.up = None
@@ -20,10 +21,10 @@ class simpleNode:
         self.val = val
         self.seen = False
 
+#Places a list of simpleOminoe objects into "buckets". "Buckets" are lists of ominoes that are the same shape.
 def placeIntoBuckets(listOfSimpleOminoes):
     buckets.append([listOfSimpleOminoes[0]])
     numBuckets = 0
-
     for index,ominoe in enumerate(listOfSimpleOminoes):
         if index == 0:
             continue
@@ -41,7 +42,7 @@ def placeIntoBuckets(listOfSimpleOminoes):
             else:
                 numBuckets+=1
 
-
+#returns True if two simpleOminoes (tile1 and tile2) are the same shape. Called by placeIntoBuckets().
 def twoTilesSame(tile1, tile2):
     orientation1 = tile1.orientations[0]
     for orientation2 in tile2.orientations:
@@ -50,6 +51,7 @@ def twoTilesSame(tile1, tile2):
             return True
     return False
 
+#helper function to aid in showing a tile visually as if it were placed on the poem
 def showTilesVisually(tile, POEM_SIZE):
     boardTile = np.empty(POEM_SIZE,  dtype='|S6')
     boardTile.flatten()
@@ -64,7 +66,7 @@ def showTilesVisually(tile, POEM_SIZE):
     print("Tile: " + str(tile))
     print(boardTile)
 
-
+#helper function for determining if two orientations (where an orientation is a graph of simpleNodes) are the same. That is, the function returns true if the graphs are identical in structure, though this function does not consider the val fields of any node, only the "appearance" of the graph.
 def sameOrientation(orientation1, orientation2):
     for node in orientation1:
         boolVal, tempIndex = nodeIsPresent(node, orientation2)
@@ -80,6 +82,7 @@ def sameOrientation(orientation1, orientation2):
             return False
     return True
 
+#helper function for same sameOrientation() which returns True if a node is present in an orientation such that any field in the node is either None or not None corresponding exactly to a node in the orientation graph.
 def nodeIsPresent(node, orientation):
     upValid = False
     downValid = False
@@ -103,7 +106,6 @@ def nodeIsPresent(node, orientation):
             leftValid = False
     return False, -1
 
-#ouch, we have to find a way to traverse the perimeter
 #always going clockwise. That's how this implementation works, could do counter clockwise but it would be a non-trivial switch
 def buildSimpleOminoes(listOfRawTiles):
     masterListOfOminoes = []
@@ -124,6 +126,7 @@ def buildSimpleOminoes(listOfRawTiles):
         masterListOfOminoes.append(curOminoe)
     return masterListOfOminoes
 
+#flips an orientation over the x axis
 def flipOminoeOverX(ominoe):
     for index,node in enumerate(ominoe):
         temp = node.down
@@ -131,6 +134,7 @@ def flipOminoeOverX(ominoe):
         ominoe[index].up = temp
     return ominoe
 
+#rotates an orientation clockwise
 def rotateClockwise(ominoe):
     for index,node in enumerate(ominoe):
         down = node.down
@@ -143,7 +147,7 @@ def rotateClockwise(ominoe):
         ominoe[index].right = up
     return ominoe
 
-
+#adds a node to an orientation
 def addNode(curNodeIndex, tile):
     for i, otherNode in enumerate(tile):
         if i != curNodeIndex:
@@ -157,6 +161,7 @@ def addNode(curNodeIndex, tile):
                 tile[curNodeIndex].left = otherNode
     return tile
 
+#turns a raw tile into a vector of simpleNodes 
 def makeListOfSimpleNodes(rawTile):
     newTile = []
     for i in rawTile:

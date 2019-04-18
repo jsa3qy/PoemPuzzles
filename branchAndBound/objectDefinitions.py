@@ -11,9 +11,9 @@ class tileDescriptor:
         self.rawTile = tile
         self.binaryTile = [0]*POEM_SIZE
         for i in tile:
-
             self.binaryTile[i] = 1
         self.bucketNum = bucketNum
+
     def toString(self, specifier):
         if specifier == 0:
             print("rawTile: ", self.rawTile)

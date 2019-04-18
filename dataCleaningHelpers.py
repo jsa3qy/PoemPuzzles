@@ -7,11 +7,9 @@ def readInRawPoem(myFile):
     listOfWords = []
     for line in myFile:
         listOfWords+=line.split()
-
     for i, word in enumerate(listOfWords):
         #https://www.quora.com/How-do-I-remove-punctuation-from-a-Python-string
         listOfWords[i] = ''.join(c for c in word if c not in punctuation)
-
     return listOfWords
 
 #takes in a list of words and returns the syllables

@@ -10,6 +10,7 @@ from buckets import *
 import sys
 from string import ascii_uppercase
 from uniqueness import uniqueCover
+import time
 
 
 #12 pentominoes and 5 tetrominoes
@@ -23,6 +24,7 @@ POEM_SIZE = 60
 iterations = 1
 
 def main():
+    start = time.time()
     #OMINOE_SIZE2 == OMINOE_SIZE1 if you only want one type
     #format of inputFile is:
     #iterations poem_size number_of_ominoe_sizes ominoe_size_0 ... ominoe_size_n add_padding_boolean_0 ... add_padding_boolean_n
@@ -47,9 +49,9 @@ def main():
 
     bucketsHashMap = {}
     myFile = open("poem.txt")
-    otherFile = open("howILoveThee.txt")
+    #otherFile = open("howILoveThee.txt")
     #otherFile = open("syllablizedPoemOneSyllablePerWord.txt")
-    #otherFile = open("syllablizedPoem.txt")
+    otherFile = open("syllablizedPoem.txt")
 
     #No punctuation in words!
     listOfWords = readInRawPoem(myFile)
@@ -70,8 +72,6 @@ def main():
         sortedListOfTiles.append(validTile.getIndicesInOminoe())
     builtListOfSimpleOminoes = buildSimpleOminoes(sortedListOfTiles)
     placeIntoBuckets(builtListOfSimpleOminoes)
-
-
 
     print("Number of tiles constructed: " + str(len(sortedListOfTiles)))
     placeIntoBuckets(builtListOfSimpleOminoes)
@@ -110,7 +110,13 @@ def main():
             listOfUsableInputs.append(referenceTile)
 ####################################################################
         S = np.array(listOfUsableInputs, dtype='int32')
+        end = time.time()
+        print("time to finish pre-process: "+str(end - start))
+        start = time.time()
         cover = ec.get_exact_cover(S)
+        end = time.time()
+        print("number of tiles: "+str(len(listOfUsableInputs)))
+        print("time to finish exact cover: "+str(end - start))
 ####################################################################
         finalList = []
         for i in cover:
@@ -137,6 +143,7 @@ def main():
             for index, val in enumerate(boardTile):
                 boardTile[index] = ''
             letterIndex = 0
+            return finalList
 
             for indexT, tile in enumerate(finalList):
                 for index in tile:
@@ -153,4 +160,5 @@ def main():
     print("number of non-uniques hit (not displayed above, all of the above ARE unique): " + str(notUniqueCount))
 
 if __name__ == "__main__":
-    main()
+    solution = main()
+    print(solution)

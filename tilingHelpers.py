@@ -7,7 +7,7 @@ from main import POEM_SIZE
 listOfTiles = []
 alreadyCounted = {}
 
-#build the list of node objects
+#build the list of node objects from a list of syllables (Strings)
 def makeSylNodes(listOfSyls):
     listOfSylNodes = []
     for numWord, word in enumerate(listOfSyls):
@@ -17,6 +17,7 @@ def makeSylNodes(listOfSyls):
     return listOfSylNodes
 
 #build a master list of syllables with absolute position
+#Absolute position is the number syllable in the poem starting from 0
 def makeMasterListOfSyllables(listOfSyls):
     masterListOfSyls = []
     for numWord, word in enumerate(listOfSyls):
@@ -30,22 +31,11 @@ def extendOminoe(curOminoe, index, listOfSylNodes):
     left = False
     right = False
     maybeNode = listOfSylNodes[index]
-    #so I an check before verses after for debugging
     copyOfOminoe = copy.deepcopy(curOminoe)
-
     if curOminoe.sylAvailable >= maybeNode.wordSize:
         curOminoe.sylList.append(listOfSylNodes[index])
         curOminoe.removeReachables(index)
         curOminoe.extendReachables(index, POEM_SIZE)
-        '''if somethingWrongHere(curOminoe):
-            print("main")
-            print(curOminoe.reachableIndices)
-            print(curOminoe.getIndicesInOminoe())
-            print("just added: " + str(listOfSylNodes[index].absolutePos))
-            print("reachables before: ")
-            print(copyOfOminoe.reachableIndices)
-
-            print("\n")'''
         if (maybeNode.sylLeft > 0):
             for node in range(1,maybeNode.sylLeft+1):
                 left = True
