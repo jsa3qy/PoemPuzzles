@@ -157,6 +157,6 @@ def main(inputList, poem, plainListOfSyllables):
             qqq-=1
     print("number of non-uniques hit (not displayed above, all of the above ARE unique): " + str(notUniqueCount))
 
-if __name__ == "__main__":
-    solution = main(["1", "60", "1", "5", "0"])
-    print(solution)
+#if __name__ == "__main__":
+    #solution = main(["1", "60", "1", "5", "0"])
+    #print(solution)
