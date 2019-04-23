@@ -23,14 +23,12 @@ POEM_SIZE = 60
 #iterations default is 1
 iterations = 1
 
-def main():
+def main(inputList, poem, plainListOfSyllables):
     start = time.time()
     #OMINOE_SIZE2 == OMINOE_SIZE1 if you only want one type
     #format of inputFile is:
     #iterations poem_size number_of_ominoe_sizes ominoe_size_0 ... ominoe_size_n add_padding_boolean_0 ... add_padding_boolean_n
-    user_specify = open('inputFile.txt')
-    user_specify = user_specify.readline().strip()
-    user_specify = user_specify.split(" ")
+    user_specify = inputList
 
     try:
         TILINGS_TO_PRINT = int(user_specify[0])
@@ -48,16 +46,16 @@ def main():
         sys.exit(1)
 
     bucketsHashMap = {}
-    myFile = open("poem.txt")
+    #myFile = open("poem.txt")
     #otherFile = open("howILoveThee.txt")
     #otherFile = open("syllablizedPoemOneSyllablePerWord.txt")
-    otherFile = open("syllablizedPoem.txt")
+    #otherFile = open("syllablizedPoem.txt")
 
     #No punctuation in words!
-    listOfWords = readInRawPoem(myFile)
-    listOfSyls = readInSyllablePoem(otherFile)
+    #listOfWords = readInRawPoem(myFile)
+    listOfSyls = plainListOfSyllables #readInSyllablePoem(otherFile)
     masterListOfSyllables = makeMasterListOfSyllables(listOfSyls)
-    listOfSylNodes = makeSylNodes(listOfSyls)
+    listOfSylNodes = makeSylNodes(poem) #makeSylNodes(listOfSyls)
 
     for index, j in enumerate(OMINOE_SIZE):
         for i, node in enumerate(listOfSylNodes):
@@ -159,6 +157,6 @@ def main():
             qqq-=1
     print("number of non-uniques hit (not displayed above, all of the above ARE unique): " + str(notUniqueCount))
 
-if __name__ == "__main__":
-    solution = main()
-    print(solution)
+#if __name__ == "__main__":
+    #solution = main(["1", "60", "1", "5", "0"])
+    #print(solution)
