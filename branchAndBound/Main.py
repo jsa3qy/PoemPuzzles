@@ -145,7 +145,7 @@ def main():
     print("Tiles before pruning: ",before)
     print("number of tiles: ",len(validListOfTileDescriptors))
     random.shuffle(validListOfTileDescriptors)
-    validListOfTileDescriptors = validListOfTileDescriptors[0:len(validListOfTileDescriptors)]
+    validListOfTileDescriptors = validListOfTileDescriptors[0:len(validListOfTileDescriptors)/8]
     print("Tiles before pruning: ",before)
     print("number of tiles: ",len(validListOfTileDescriptors))
     #G=nx.Graph()
