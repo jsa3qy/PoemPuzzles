@@ -12,6 +12,7 @@ front-end: includes all front end infrastructure for the app
 how to get started running this locally:
 1) clone repo 
 2) install dependencies 
+    - `pip install flask`
 3) run `chmod -x manage.py` from `api` directory
 4) ./run.sh
 
