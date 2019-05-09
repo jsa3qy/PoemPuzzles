@@ -3,7 +3,8 @@ Repo for code related to puzzle poetry research
 
 Hi all!
 
-In the master branch are two files: api and front-end
+In the master branch are two primary folders: api and front-end
+the "run.sh" script is used to get the whole system running in one shot.
 
 api: includes the back-end code for this Sonnet Tiling App!
 front-end: includes all front end infrastructure for the app
