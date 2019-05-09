@@ -6,6 +6,8 @@ import PoemToCheck from './SyllableCheck'
 import EightLineMenu from './EightLineMenu'
 import SixLineMenu from './SixLineMenu'
 
+var api_url = "http://localhost:5000"
+
 class PoemInput extends React.Component {
 	constructor(props) {
 		super(props);
@@ -65,7 +67,7 @@ class PoemInput extends React.Component {
                 request_string = request_string.concat(poem_lines_processed[line])
             }
 
-            var fetch_url = "http://localhost:5000/api/poem-syllable?poem=";
+            var fetch_url = api_url.concat("/api/poem-syllable?poem=")
             fetch_url = fetch_url.concat(request_string);
 
             var that = this;
@@ -176,7 +178,8 @@ class PoemInput extends React.Component {
 
         if (ready_to_tile) {
             //TODO: send correct info to api
-            var fetch_url = "http://localhost:5000/api/puzzle?";
+
+            var fetch_url = api_url.concat("/api/puzzle?")
 
             fetch_url = fetch_url.concat("syllable_poem=");
             fetch_url = fetch_url.concat(this.state.syllable_poem.toString());
