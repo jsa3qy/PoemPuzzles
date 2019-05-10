@@ -19,6 +19,7 @@ DEPENDENCY INSTALLATION AND SET UP
   1) clone repo if not done already: 'git clone' + the link to this repo 
   2) cd into the repo (e.g. `cd PoemPuzzles`)
   3) run `./setup_backend.sh`, If there are errors, then you may have missed a dependency. Try and follow the errors to figure it out. 
+  common errors: valgrind is not recognized, so `sudo apt-get install valgrind`
   10) `cd ..` (make sure you’re in the api directory)
   11) `pip install -r requirements.txt`
   12) the back end set up should now be complete, running `python poem-api.py` should successfully get the backend served. 
