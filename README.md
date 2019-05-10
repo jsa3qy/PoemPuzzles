@@ -24,10 +24,12 @@ DEPENDENCY INSTALLATION AND SET UP
   11) `pip install -r requirements.txt`
   12) the back end set up should now be complete, running `python poem-api.py` should successfully get the backend served. 
 
+`./run_backend.sh` to run the backend!
 
 how to use the frontend
-  1) ./setup_frontend.sh
-  2) ./run_frontend.sh
+  1) `./setup_frontend.sh`
+  
+`./run_frontend.sh` to run the backend!
 
   To run frontend, run `npm start` from the frontend directory
 
