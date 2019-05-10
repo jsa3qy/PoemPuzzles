@@ -1,4 +1,4 @@
 #! /bin/sh
 ls
-screen -S 1 cd api && python poem-api.py &
-screen -S 2 cd ../front-end && npm start 
+cd api && python poem-api.py &
+cd ../front-end && npm start & 
