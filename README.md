@@ -15,9 +15,8 @@ how to get started running this locally:
 2) install dependencies 
 4) ./run.sh
 
-1) clone repo: 'git clone' + the link to this repo 
-
 DEPENDENCY INSTALLATION AND SET UP
+  1) clone repo if not done already: 'git clone' + the link to this repo 
   2) cd into the repo (e.g. `cd PoemPuzzles`)
   3) run `./install.sh`
   4) hit Y whenever asked 
