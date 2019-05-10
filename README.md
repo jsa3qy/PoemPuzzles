@@ -32,7 +32,7 @@ DEPENDENCY INSTALLATION AND SET UP
 
 how to use the frontend
   1) in the PoemPuzzles directory, `pip install flask`
-  2) to create a new frontend directory, run `npx create-react-app puzzle-frontend` (run `npm i -g npx` if npx is not recognized)
+  2) to create a new frontend directory, run `npx create-react-app puzzle-frontend` (run `sudo npm i -g npx` if npx is not recognized)
   3) delete `src/` folder of new project and replace with `src/` folder from repo: 
         `cd front-end`
         `rm -r src`
