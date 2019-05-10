@@ -30,9 +30,9 @@ how to use the frontend
   
 `./run_frontend.sh` to run the backend!
 
-if you get a bunch of errors try running `npm install` and then the run_frontend.sh script again
+if you get a bunch of errors (like Error: Cannot find module '@csstools/normalize.css') try running `npm install` and then the run_frontend.sh script again
 
-  To run frontend, run `npm start` from the frontend directory
+  To run frontend, run `npm start` from the frontend directory (`puzzle-frontend`) 
 
 SOME ERRORS YOU MIGHT SEE:
 - if you're getting an error that your port is already in use that you're trying to run the back end on:
