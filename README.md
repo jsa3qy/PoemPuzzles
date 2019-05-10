@@ -18,31 +18,23 @@ how to get started running this locally:
 DEPENDENCY INSTALLATION AND SET UP
   1) clone repo if not done already: 'git clone' + the link to this repo 
   2) cd into the repo (e.g. `cd PoemPuzzles`)
-  3) run `./install.sh`
-  4) hit Y whenever asked 
-  5) once the install script completes run the following commands: `cd api`, `chmod -x poem-api.py`, `rm -r exact_cover_np`
-  6) `git clone https://github.com/moygit/exact_cover_np.git`
-  7) `cd exact_cover_np`
-  8) sudo apt-get install valgrind
-  9) run `make`, if there are no errors, you are good to go. If there are errors, then you may have missed a dependency. Try and follow the errors to figure it out. 
+  3) run `./setup_backend.sh`, If there are errors, then you may have missed a dependency. Try and follow the errors to figure it out. 
   10) `cd ..` (make sure you’re in the api directory)
   11) `pip install -r requirements.txt`
   12) the back end set up should now be complete, running `python poem-api.py` should successfully get the backend served. 
 
 
 how to use the frontend
-  1) in the PoemPuzzles directory, `pip install flask`
-  2) to create a new frontend directory, run `npx create-react-app puzzle-frontend` (run `sudo npm i -g npx` if npx is not recognized)
-  3) delete `src/` folder of new project and replace with `src/` folder from repo: 
-        `cd front-end`
-        `rm -r src`
-        `cd ..`
-        `mv /front-end/src /puzzle-frontend`
-      
-  4) cd into `puzzle-frontend` and run `npm install styled-components`
-  5) make sure that in the script run.sh, that if "front-end" is replaced with "puzzle-frontend" if it is not already
+  1) ./setup_frontend.sh
+  2) ./run_frontend.sh
 
   To run frontend, run `npm start` from the frontend directory
+
+SOME ERRORS YOU MIGHT SEE:
+- if you're getting an error that your port is already in use that you're trying to run the back end on:
+  `lsof -t -i :5000`
+  `kill -9 ` + PID numbers shown 
+ 
 
 Notes:
 - Frontend uses local addresses to call backend functions. To change the base url that the frontend calls, update the variable `api_url` at the beginning of `PoemInput.js`
