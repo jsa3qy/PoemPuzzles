@@ -31,6 +31,8 @@ how to use the frontend
   
 `./run_frontend.sh` to run the backend!
 
+if you get a bunch of errors try running `npm install` and then the run_frontend.sh script again
+
   To run frontend, run `npm start` from the frontend directory
 
 SOME ERRORS YOU MIGHT SEE:
