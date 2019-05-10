@@ -1,8 +1,8 @@
 #!/bin/sh 
 chmod +x install.sh
 ./install.sh
-pip install -r requirements.txt
 cd api
+pip install -r requirements.txt
 chmod +x poem-api.py
 chmod +x exact_cover_np
 rm -rf exact_cover_np

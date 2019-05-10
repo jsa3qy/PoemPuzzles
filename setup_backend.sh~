@@ -1,4 +1,5 @@
 #!/bin/sh 
+chmod +x install.sh
 ./install.sh
 pip install -r requirements.txt
 cd api
