@@ -1,3 +1,2 @@
 #!/bin/sh
-cd puzzle-frontend
-npm start
+cd puzzle-frontend && npm start
