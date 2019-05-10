@@ -15,20 +15,20 @@ how to get started running this locally:
 2) install dependencies 
 4) ./run.sh
 
-1. clone repo: 'git clone' + the link to this repo 
+1) clone repo: 'git clone' + the link to this repo 
 
 DEPENDENCY INSTALLATION AND SET UP
-2. cd into the repo (e.g. `cd PoemPuzzles`)
-3. run `./install.sh`
-4. hit Y whenever asked 
-5. once the install script completes run the following commands: `cd api`, `chmod -x poem-api.py`, `rm -r exact_cover_np`
-6. `git clone https://github.com/moygit/exact_cover_np.git`
-7. `cd exact_cover_np`
-8. sudo apt-get install valgrind
-9. run `make`, if there are no errors, you are good to go. If there are errors, then you may have missed a dependency. Try and follow the errors to figure it out. 
-10. `cd ..` (make sure you’re in the api directory)
-11. `pip install -r requirements.txt`
-12. the back end set up should now be complete, running `python poem-api.py` should successfully get the backend served. 
+2) cd into the repo (e.g. `cd PoemPuzzles`)
+3) run `./install.sh`
+4) hit Y whenever asked 
+5) once the install script completes run the following commands: `cd api`, `chmod -x poem-api.py`, `rm -r exact_cover_np`
+6) `git clone https://github.com/moygit/exact_cover_np.git`
+7) `cd exact_cover_np`
+8) sudo apt-get install valgrind
+9) run `make`, if there are no errors, you are good to go. If there are errors, then you may have missed a dependency. Try and follow the errors to figure it out. 
+10) `cd ..` (make sure you’re in the api directory)
+11) `pip install -r requirements.txt`
+12) the back end set up should now be complete, running `python poem-api.py` should successfully get the backend served. 
 
 
 how to use the frontend
